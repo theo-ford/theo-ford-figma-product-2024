@@ -69,10 +69,24 @@ const MenuCon = styled.div`
   margin-left: calc(50% + 6.5px);
   position: sticky;
   top: 12.5px;
+  width: 30%;
 `;
+
 const DesktopNavP = styled.p`
   color: #878787;
   mix-blend-mode: exclusion;
+`;
+const PaginationCon = styled.div`
+  mix-blend-mode: exclusion;
+  z-index: 300000;
+  margin-right: calc(12.5px);
+  float: right;
+  position: sticky;
+  top: 12.5px;
+  margin-top: -4px;
+  p {
+    color: white;
+  }
 `;
 const PageCon = styled.div``;
 
@@ -612,18 +626,20 @@ const ProjectDesktop = ({ data }) => {
         </title>
       </Helmet>
       <LogoTitleCon>
-        <LogoCon>
+        {/* <LogoCon>
           <Link to="/">
             <Logo />
           </Link>
-        </LogoCon>
+        </LogoCon> */}
         <p>
           {" "}
+          <span style={{ fontWeight: "bold" }}>Theo Ford</span>
           &nbsp;for {data.prismicProjectDesktop.data.project_title.text} in{" "}
           {data.prismicProjectDesktop.data.location.text}.{" "}
           {data.prismicProjectDesktop.data.year.text}.
         </p>
       </LogoTitleCon>
+
       <MenuCon>
         <DesktopNavP>
           <Link to="/">Index, </Link>
@@ -632,6 +648,11 @@ const ProjectDesktop = ({ data }) => {
           {/* <br></br>Instagram, Twitter */}
         </DesktopNavP>
       </MenuCon>
+      <PaginationCon>
+        <DesktopNavP>
+          Project {currentProjectPageNumber + 1} of {projects.length}
+        </DesktopNavP>
+      </PaginationCon>
       <PageCon>
         <IntroCon>
           <IntroTextCon>
