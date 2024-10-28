@@ -116,6 +116,7 @@ export const NavGrid = () => {
               >
                 Index,{" "}
               </Link>
+              <Link to="/resume">Resume, </Link>
               <Link
                 to="/about"
                 className={currentPage == "about" ? "selected" : ""}

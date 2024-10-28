@@ -256,14 +256,46 @@ const BlackFilmsModuleConCon = styled.div`
   }};
 `;
 
-const NextProject = styled.div`
-  p {
-    font-size: 100px;
-  }
-  margin-top: 100px;
+const MoreProjects = styled.div`
+  grid-template-columns: 1fr 1fr 1fr 1fr /* 1 */ 1fr 1fr 1fr 1fr /* 2 */ 1fr 1fr 1fr 1fr /* 3 */ 1fr 1fr 1fr 1fr /* 4 */;
+  grid-gap: 12.5px;
+  width: calc(100% - 25px);
+  display: grid;
+  margin-top: 120px;
   margin-left: 12.5px;
+  margin-bottom: 120px;
+
+  div {
+    grid-column: span 4;
+    /* display: inline-block;
+    float: left;
+    position: relative;
+    width: 25%; */
+  }
+  p {
+    /* font-size: 100px; */
+  }
+
   /* font-weight: bold;
   font-family: "HelveticaNowDisplay"; */
+  img {
+    width: 100%;
+  }
+  p.header {
+    padding-bottom: 6px;
+    font-size: 24px;
+  }
+  p.project_title {
+    opacity: 50%;
+    padding-top: 6px;
+    padding-bottom: 12.5px;
+  }
+`;
+const ResumeImage = styled.div`
+  width: 100%;
+  height: 418px;
+  margin-top: 32px;
+  background-color: black;
 `;
 
 const ProjectDesktop = ({ data }) => {
@@ -278,7 +310,7 @@ const ProjectDesktop = ({ data }) => {
   const currentProjectPageNumber = projects.indexOf(
     data.prismicProjectDesktop.uid
   );
-  console.log(currentProjectPageNumber);
+  // console.log(currentProjectPageNumber);
 
   const nextProjectUid =
     // if the current page + 1 is less than total projects
@@ -296,6 +328,38 @@ const ProjectDesktop = ({ data }) => {
       project.project_relationship_field.document.uid === nextProjectUid
   );
 
+  const prevProjectUid =
+    // if the current page + 1 is less than total projects
+    currentProjectPageNumber + 1 < projects.length
+      ? // looks in the projects array for current project number + 1
+        projects[currentProjectPageNumber - 1]
+      : projects[0];
+
+  console.log(prevProjectUid);
+
+  const prevProjectContent = data.prismicProjectIndexSelect.data.project_relationship_group.filter(
+    project =>
+      project.project_relationship_field.document.uid === prevProjectUid
+  );
+
+  var x = undefined;
+  if (currentProjectPageNumber === 0) {
+    // console.log(true);
+    x = true;
+  } else {
+    // console.log(false);
+    x = false;
+  }
+
+  var y = undefined;
+  if (currentProjectPageNumber === projects.length - 1) {
+    // console.log(true);
+    y = true;
+  } else {
+    // console.log(false);
+    y = false;
+  }
+  console.log("y = " + y);
   // console.log(nextProjectContent);
   // console.log(nextProjectContent[0]);
   // console.log(nextProjectContent[0].project_relationship_field.document.uid);
@@ -304,34 +368,64 @@ const ProjectDesktop = ({ data }) => {
   //     .text
   // );
 
-  // TAKE 2
+  const PrevProject = () => {
+    return (
+      <div>
+        <Link
+          to={`/${prevProjectContent[0].project_relationship_field.document.uid}`}
+        >
+          <p className="header">Previous Project</p>
+          <GatsbyImage
+            image={
+              prevProjectContent[0].project_relationship_field.document.data
+                .index_preview_img.gatsbyImageData
+            }
+          />
+          <p className="project_title">
+            {
+              prevProjectContent[0].project_relationship_field.document.data
+                .project_title.text
+            }
+          </p>
+        </Link>
+      </div>
+    );
+  };
 
-  // const projects = data.allPrismicProjectDesktop.edges.map(
-  //   project => project.node.uid
-  // );
+  const NextProject = () => {
+    return (
+      <div>
+        <Link
+          to={`/${nextProjectContent[0].project_relationship_field.document.uid}`}
+        >
+          <p className="header">Next Project</p>
+          <GatsbyImage
+            image={
+              nextProjectContent[0].project_relationship_field.document.data
+                .index_preview_img.gatsbyImageData
+            }
+          />
+          <p className="project_title">
+            {
+              nextProjectContent[0].project_relationship_field.document.data
+                .project_title.text
+            }
+          </p>
+        </Link>
+      </div>
+    );
+  };
 
-  // // Next Project link
-  // // where in the array the current projects sits. finds uid in that array and tells you what number that is in the list.
-  // const currentProjectPageNumber = projects.indexOf(
-  //   data.prismicProjectDesktop.uid
-  // );
-  // console.log(currentProjectPageNumber);
-
-  // const nextProjectUid =
-  //   // if the current page + 1 is less than total projects
-  //   currentProjectPageNumber + 1 < projects.length
-  //     ? // looks in the projects array for current project number + 1
-  //       projects[currentProjectPageNumber + 1]
-  //     : projects[0];
-  // // console.log(nextProjectUid);
-
-  // // filter for next project uid in all the projects
-  // // but this is the things that allows you to pull content from that project
-  // // returns all the data that matches the uid for the next project
-  // const nextProjectContent = data.allPrismicProjectDesktop.edges.filter(
-  //   project => project.node.uid === nextProjectUid
-  // );
-
+  const Resume = () => {
+    return (
+      <div>
+        <Link to="/resume">
+          <ResumeImage />
+        </Link>
+        <p className="project_title">View Resume</p>
+      </div>
+    );
+  };
   const projectBody = data.prismicProjectDesktop.data.body2.map(
     (content, index) => {
       if (content.slice_type == "full_bleed_image") {
@@ -533,6 +627,7 @@ const ProjectDesktop = ({ data }) => {
       <MenuCon>
         <DesktopNavP>
           <Link to="/">Index, </Link>
+          <Link to="/resume">Resume, </Link>
           <Link to="/about">About</Link>
           {/* <br></br>Instagram, Twitter */}
         </DesktopNavP>
@@ -569,19 +664,11 @@ const ProjectDesktop = ({ data }) => {
         </MetaCon>
 
         <Grid16>{projectBody}</Grid16>
-        <NextProject>
-          <Link
-            to={`/${nextProjectContent[0].project_relationship_field.document.uid}`}
-          >
-            <p>
-              Next :{" "}
-              {
-                nextProjectContent[0].project_relationship_field.document.data
-                  .project_title.text
-              }
-            </p>
-          </Link>
-        </NextProject>
+        <MoreProjects>
+          {/* {x ? "" : <PrevProject />} */}
+          {y ? <Resume /> : <NextProject />}
+          {/* <NextProject></NextProject> */}
+        </MoreProjects>
       </PageCon>
     </>
   );

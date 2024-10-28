@@ -310,6 +310,18 @@ const PageTitleCon = styled.div`
     display: block;
   }
 `;
+const NumCon = styled.div`
+  p {
+    font-size: 100px;
+    color: white;
+    font-family: "HelveticaNowDisplay";
+    font-weight: bold;
+  }
+  position: fixed;
+  bottom: 12.5px;
+  left: 12.5px;
+`;
+const SlideShowCon = styled.div``;
 const ProjectIndex = ({ data }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
   const LogoConRef = useRef(null);
@@ -555,11 +567,11 @@ const ProjectIndex = ({ data }) => {
           </div>
         </PageTitleCon>
 
-        <CategoryMenuConCon>
+        {/* <CategoryMenuConCon>
           <CategoryMenuCon>
             <Categories></Categories>
           </CategoryMenuCon>
-        </CategoryMenuConCon>
+        </CategoryMenuConCon> */}
 
         <TableHeaderCon>
           <Grid16>
@@ -585,6 +597,10 @@ const ProjectIndex = ({ data }) => {
           </Grid16>
         </TableHeaderCon>
         <TableCon>{organisedArrayMap}</TableCon>
+        {/* <SlideshowCon></SlideshowCon> */}
+        <NumCon>
+          <p>1</p>
+        </NumCon>
       </PageCon>
     </>
   );
