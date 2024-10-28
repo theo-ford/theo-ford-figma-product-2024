@@ -1,0 +1,20 @@
+{
+  "Main": {
+    "project_relationship_group": {
+      "type": "Group",
+      "config": {
+        "fields": {
+          "project_relationship_field": {
+            "type": "Link",
+            "config": {
+              "select": "document",
+              "customtypes": ["project_desktop"],
+              "label": "Project Relationship Field"
+            }
+          }
+        },
+        "label": "Project Relationship Group"
+      }
+    }
+  }
+}
