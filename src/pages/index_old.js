@@ -161,7 +161,7 @@ const ImageBorderCon = styled.div`
 `;
 
 const IndexImgCon = styled.div`
-  grid-column: 5 / span 4;
+  grid-column: span 2;
   @media (max-width: 666px) {
     display: none;
   }
@@ -207,43 +207,50 @@ const InformationCon = styled.div`
   height: 20px;
 `;
 const ImgSpacer = styled.div`
-  grid-column: span;
+  grid-column: span 2;
   @media (max-width: 666px) {
     display: none;
   }
 `;
 const ProjectTitleCon = styled.div`
-  grid-column: 9 / span 2;
-  /* background-color: red; */
+  grid-column: span 2;
   @media (max-width: 666px) {
     grid-column: span 8;
   }
 `;
-const CategoryCon = styled.div`
-  grid-column: 11 / span 3;
-  /* background-color: blue; */
-  @media (max-width: 666px) {
-    grid-column: span 8;
-  }
-`;
-const LocationCon = styled.div`
-  grid-column: 14 / span 2;
-  margin-top: -15px;
-  /* background-color: green; */
+const ClientCon = styled.div`
+  grid-column: span 2;
   @media (max-width: 666px) {
     display: none;
   }
 `;
+const SectorCon = styled.div`
+  grid-column: span 2;
+  @media (max-width: 666px) {
+    display: none;
+  }
+`;
+const CategoryCon = styled.div`
+  grid-column: span 4;
+  @media (max-width: 666px) {
+    grid-column: span 8;
+  }
+`;
 const YearCon = styled.div`
-  /* background-color: yellow; */
-  grid-column: 16 / span 1;
+  grid-column: span 2;
+  @media (max-width: 666px) {
+    display: none;
+  }
+`;
+const LocationCon = styled.div`
+  grid-column: span 2;
   @media (max-width: 666px) {
     display: none;
   }
 `;
 
 const TableHeaderCon = styled.div`
-  margin-top: 82vh;
+  margin-top: 40vh;
 `;
 
 const IndexTitleP = styled.p`
@@ -253,8 +260,8 @@ const IndexTitleP = styled.p`
   letter-spacing: -0.3px;
 `;
 const CategoryMenuConCon = styled.div`
-  width: calc(18.75% - 12.5px);
-  margin-left: calc(81.25% + 12.5px);
+  width: calc(25% - 12.5px);
+  margin-left: calc(75% + 12.5px);
   top: 12.5px;
   /* top: 100px; */
   position: absolute;
@@ -301,7 +308,6 @@ const TitleCon = styled.div`
     letter-spacing: -1px;
   }
 `;
-
 const PageTitleCon = styled.div`
   position: fixed;
   top: 12.5px;
@@ -341,7 +347,12 @@ const ProjectIndex = ({ data }) => {
                 <Link to="/" className="selected">
                   Index,{" "}
                 </Link>
-                <Link to="/resume">Resume, </Link>
+                <Link
+                  to="/resume"
+                  className={currentPage == "about" ? "selected" : ""}
+                >
+                  Resume,{" "}
+                </Link>
                 <Link
                   to="/about"
                   className={currentPage == "about" ? "selected" : ""}
@@ -394,14 +405,14 @@ const ProjectIndex = ({ data }) => {
     }
   );
 
-  // const organisedArray = projectIndexSelectArray.sort(function(a, b) {
-  //   return (
-  //     b.content.project_relationship_field.document.data.year.text -
-  //     a.content.project_relationship_field.document.data.year.text
-  //   );
-  // });
+  const organisedArray = projectIndexSelectArray.sort(function(a, b) {
+    return (
+      b.content.project_relationship_field.document.data.year.text -
+      a.content.project_relationship_field.document.data.year.text
+    );
+  });
 
-  const organisedArrayMap = projectIndexSelectArray
+  const organisedArrayMap = organisedArray
     .filter(project => {
       if (activeCategory === null) {
         return project;
@@ -444,22 +455,22 @@ const ProjectIndex = ({ data }) => {
                       }
                     </IndexBodyP>
                   </ProjectTitleCon>
-                  {/* <ClientCon>
+                  <ClientCon>
                     <IndexBodyP>
                       {
                         content.content.project_relationship_field.document.data
                           .client.text
                       }
                     </IndexBodyP>
-                  </ClientCon> */}
-                  {/* <SectorCon>
+                  </ClientCon>
+                  <SectorCon>
                     <IndexBodyP>
                       {
                         content.content.project_relationship_field.document.data
                           .sector.text
                       }
                     </IndexBodyP>
-                  </SectorCon> */}
+                  </SectorCon>
                   <CategoryCon>
                     <IndexBodyP>
                       {" "}
@@ -567,12 +578,12 @@ const ProjectIndex = ({ data }) => {
             <ProjectTitleCon>
               <IndexTitleP>Project</IndexTitleP>
             </ProjectTitleCon>
-            {/* <ClientCon>
+            <ClientCon>
               <IndexTitleP>Client</IndexTitleP>
-            </ClientCon> */}
-            {/* <SectorCon>
+            </ClientCon>
+            <SectorCon>
               <IndexTitleP>Sector</IndexTitleP>
-            </SectorCon> */}
+            </SectorCon>
             <CategoryCon>
               <IndexTitleP>Category</IndexTitleP>
             </CategoryCon>
@@ -593,7 +604,7 @@ const ProjectIndex = ({ data }) => {
 export default withPrismicPreview(ProjectIndex);
 
 export const query = graphql`
-  query ProjectIndexSelectQuery120 {
+  query ProjectIndexSelectQuery2 {
     prismicProjectIndexSelect {
       data {
         project_relationship_group {

@@ -20,24 +20,24 @@ import Icon from "../../assets/WhiteLogo.svg";
 import { NavGrid } from "../components/tf/nav-grid/nav";
 
 const GlobalStyle = createGlobalStyle`
-  html {
-    background-color: black;
-    overflow-x: clip;
-    max-width: 100vw;
-  }
-  body {
-    // https://stackoverflow.com/questions/47095596/body-overflow-x-hidden-breaks-position-sticky
-    background-color: black;
-    overflow-x: clip;
-    max-width: 100vw;
-  }
-  p {
-    letter-spacing: -0.2px;
-  }
-
-    
+    html {
+      background-color: black;
+      overflow-x: clip;
+      max-width: 100vw;
+    }
+    body {
+      // https://stackoverflow.com/questions/47095596/body-overflow-x-hidden-breaks-position-sticky
+      background-color: black;
+      overflow-x: clip;
+      max-width: 100vw;
+    }
+    p {
+      letter-spacing: -0.2px;
+    }
   
-`;
+      
+    
+  `;
 
 /* BOTH */
 const LogoGridCon = styled.div`
@@ -55,8 +55,8 @@ const LogoGridCon = styled.div`
     margin-left: 10px;
     top: 10px;
     /* width: calc(100% - 2px);
-    margin-left: 12.5px;
-    top: 12.5px; */
+      margin-left: 12.5px;
+      top: 12.5px; */
   }
 `;
 /* DESKTOP */
@@ -95,8 +95,8 @@ const DesktopNavP = styled.p`
     color: white;
   }
   /* a {
-    color: white;
-  } */
+      color: white;
+    } */
 `;
 
 /* MOBILE */
@@ -197,10 +197,10 @@ const BodyTextCon = styled.div`
     }
   }
   .can {
-    /* margin-top: 100px; */
+    margin-top: 100px;
   }
   .experience {
-    margin-top: 100px;
+    margin-top: 12.5px;
   }
 
   .contact {
@@ -294,9 +294,9 @@ const ProjectIndex = ({ data }) => {
               <LogoCon ref={LogoConRef}>
                 <Link to="/">
                   {/* <p>
-                    <span>Theo Ford</span> is an Indian/British art-director &
-                    programmer currently in New York.
-                  </p> */}
+                      <span>Theo Ford</span> is an Indian/British art-director &
+                      programmer currently in New York.
+                    </p> */}
                 </Link>
               </LogoCon>
             </LogoConCon>
@@ -308,8 +308,10 @@ const ProjectIndex = ({ data }) => {
                 >
                   Index,{" "}
                 </Link>
-                <Link to="/resume">Resume, </Link>
-                <Link to="/about" className="selected">
+                <Link to="/resume" className="selected">
+                  Resume,{" "}
+                </Link>
+                <Link to="/about" c>
                   About
                 </Link>
                 {/* <br></br>Instagram, Twitter */}
@@ -348,7 +350,7 @@ const ProjectIndex = ({ data }) => {
       );
     }
   };
-  const image = getImage(data.prismicAbout.data.image);
+
   return (
     <>
       <GlobalStyle />
@@ -360,46 +362,99 @@ const ProjectIndex = ({ data }) => {
         <CopyNav></CopyNav>
 
         <div>
-          <IntroCon>
-            <p>
-              <span className="bold">Theo Ford</span> is an Indian/British
-              art-director & programmer currently in New York.
-            </p>
-          </IntroCon>
-          <ImgCon>
-            <div>
-              <GatsbyImage image={image} />
-              <ImgCaptionCon>
-                <p>
-                  This is an A0 photo of me in Philadelphia when I was two.
-                  Mutaji (Grandma) had it hanging in her living room next to a
-                  portrait of her other great love Guru Nanak. When she passed,
-                  it was the only thing I received in the inheritance. At the
-                  time I was bitter because my sister got money, but with age
-                  this feels priceless.
-                </p>
-              </ImgCaptionCon>
-            </div>
-          </ImgCon>
           <div>
             <BodyTextCon>
-              <div className="can">
+              <div className="experience">
                 <p>
-                  <span className="bold">Theo Ford</span> believes in...
+                  <span className="bold"> Theo Ford's</span> experience...
                   <br></br>
                   <br></br>
-                  meaningful improvement.<br></br>
-                  fun, joy, humour and playfulness.<br></br>
-                  celebrating the everyday.<br></br>
-                  efficient use of resources.<br></br>
-                  intuition + logic + play + strategy. <br></br>
-                  listening to people.<br></br>
-                  doing things yourself.<br></br>
-                  tools.<br></br>
+                  Self-Employed<br></br>
+                  Designer, Developer & Art Director<br></br>
+                  London/Los Angeles<br></br>
+                  2018–2024<br></br>
+                  <br></br>
+                  Select Clients: Lunar Energy, Mayku, Jan Hendzel Studio, 
+                  <br></br>
+                  G4C, Nowness, Dazed, Martinez Gallery, Merchant Gallery, 
+                  <br></br>
+                  Alice Bucknell, Uma Termas, Studio Lyons, Josh Kopeika
+                  <br></br>
+                  <br></br>
+                  American Apparel <br></br>
+                  Art Director & Videographer<br></br>
+                  Los Angeles<br></br>
+                  2017–2018<br></br>
+                  <br></br>
+                  EdenSpiekermann<br></br>
+                  Product Designer & Developer<br></br>
+                  Los Angeles<br></br>
+                  2016–2017<br></br>
+                  <br></br>
+                  Safe Place for Youth<br></br>
+                  Teacher<br></br>
+                  Los Angeles<br></br>
+                  2016-2018<br></br>
+                  <br></br>
+                  COS <br></br>
+                  Middle-Weight Designer <br></br>
+                  London<br></br>
+                  2015<br></br>
+                  <br></br>
+                  Graphic Thought Facility<br></br>
+                  Internship <br></br>
+                  London<br></br>
+                  2015<br></br>
+                  <br></br>
+                  Research & Development<br></br>
+                  Internship<br></br>
+                  Stockholm<br></br>
+                  2014<br></br>
+                  <br></br>
+                  Lundgren+Lindqvist<br></br>
+                  Internship<br></br>
+                  Gothenberg<br></br>
+                  2014<br></br>
+                  <br></br>
+                  Daniel Eatock <br></br>
+                  Internship<br></br>
+                  Remote<br></br>
+                  2014<br></br>
+                  <br></br>
+                  Glasgow School of Art<br></br>
+                  BA Hons in Graphic Design <br></br>
+                  Glasgow<br></br>
+                  2010 – 2014<br></br>
+                  <br></br>
+                  Falmouth University <br></br>
+                  Art Foundation <br></br>
+                  Falmouth<br></br>
+                  2009–2010<br></br>
                 </p>
               </div>
             </BodyTextCon>
-
+            <BodyTextCon>
+              <div className="can">
+                <p>
+                  <span className="bold">Theo Ford</span> can...<br></br>
+                  <br></br>
+                  build websites using HTML, CSS, Javascript, Gatsby & NextJS
+                  <br></br>
+                  design websites and digital products using Figma<br></br>
+                  edit and colour grade film using Premiere Pro and Davinci
+                  <br></br>
+                  direct and shoot film using an iPhone or Canon 5D<br></br>
+                  animate typography and graphics using After Effects<br></br>
+                  edit photography using Adobe Photoshop<br></br>
+                  create graphic design for printed matter using Adobe Indesign
+                  <br></br>
+                  make type design and illustration using Adobe Illustrator
+                  <br></br>
+                  devise product, marketing and brand strategies<br></br>
+                  come up with original ideas<br></br>
+                </p>
+              </div>
+            </BodyTextCon>
             <ContactBlock>
               <ContactCon>
                 <div className="title">

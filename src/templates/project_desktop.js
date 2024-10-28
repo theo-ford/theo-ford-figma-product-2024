@@ -256,8 +256,81 @@ const BlackFilmsModuleConCon = styled.div`
   }};
 `;
 
+const NextProject = styled.div`
+  p {
+    font-size: 100px;
+  }
+  margin-top: 100px;
+  margin-left: 12.5px;
+  /* font-weight: bold;
+  font-family: "HelveticaNowDisplay"; */
+`;
+
 const ProjectDesktop = ({ data }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
+
+  const projects = data.prismicProjectIndexSelect.data.project_relationship_group.map(
+    project => project.project_relationship_field.document.uid
+  );
+
+  // Next Project link
+  // where in the array the current projects sits. finds uid in that array and tells you what number that is in the list.
+  const currentProjectPageNumber = projects.indexOf(
+    data.prismicProjectDesktop.uid
+  );
+  console.log(currentProjectPageNumber);
+
+  const nextProjectUid =
+    // if the current page + 1 is less than total projects
+    currentProjectPageNumber + 1 < projects.length
+      ? // looks in the projects array for current project number + 1
+        projects[currentProjectPageNumber + 1]
+      : projects[0];
+  // console.log(nextProjectUid);
+
+  // filter for next project uid in all the projects
+  // but this is the things that allows you to pull content from that project
+  // returns all the data that matches the uid for the next project
+  const nextProjectContent = data.prismicProjectIndexSelect.data.project_relationship_group.filter(
+    project =>
+      project.project_relationship_field.document.uid === nextProjectUid
+  );
+
+  // console.log(nextProjectContent);
+  // console.log(nextProjectContent[0]);
+  // console.log(nextProjectContent[0].project_relationship_field.document.uid);
+  // console.log(
+  //   nextProjectContent[0].project_relationship_field.document.data.project_title
+  //     .text
+  // );
+
+  // TAKE 2
+
+  // const projects = data.allPrismicProjectDesktop.edges.map(
+  //   project => project.node.uid
+  // );
+
+  // // Next Project link
+  // // where in the array the current projects sits. finds uid in that array and tells you what number that is in the list.
+  // const currentProjectPageNumber = projects.indexOf(
+  //   data.prismicProjectDesktop.uid
+  // );
+  // console.log(currentProjectPageNumber);
+
+  // const nextProjectUid =
+  //   // if the current page + 1 is less than total projects
+  //   currentProjectPageNumber + 1 < projects.length
+  //     ? // looks in the projects array for current project number + 1
+  //       projects[currentProjectPageNumber + 1]
+  //     : projects[0];
+  // // console.log(nextProjectUid);
+
+  // // filter for next project uid in all the projects
+  // // but this is the things that allows you to pull content from that project
+  // // returns all the data that matches the uid for the next project
+  // const nextProjectContent = data.allPrismicProjectDesktop.edges.filter(
+  //   project => project.node.uid === nextProjectUid
+  // );
 
   const projectBody = data.prismicProjectDesktop.data.body2.map(
     (content, index) => {
@@ -405,7 +478,7 @@ const ProjectDesktop = ({ data }) => {
       }
       if (content.slice_type == "black_films_module") {
         const posterImage = content.primary.poster_image;
-        console.log(posterImage);
+        // console.log(posterImage);
         return (
           <>
             <BlackFilmsModuleCon RowMarginTop={content.primary.row_margin_top}>
@@ -496,6 +569,19 @@ const ProjectDesktop = ({ data }) => {
         </MetaCon>
 
         <Grid16>{projectBody}</Grid16>
+        <NextProject>
+          <Link
+            to={`/${nextProjectContent[0].project_relationship_field.document.uid}`}
+          >
+            <p>
+              Next :{" "}
+              {
+                nextProjectContent[0].project_relationship_field.document.data
+                  .project_title.text
+              }
+            </p>
+          </Link>
+        </NextProject>
       </PageCon>
     </>
   );
@@ -505,6 +591,62 @@ export default withPrismicPreview(ProjectDesktop);
 
 export const query = graphql`
   query Artists($uid: String!) {
+    prismicProjectIndexSelect {
+      data {
+        project_relationship_group {
+          project_relationship_field {
+            document {
+              ... on PrismicProjectDesktop {
+                id
+                type
+                uid
+                data {
+                  project_title {
+                    text
+                  }
+                  index_preview_img {
+                    gatsbyImageData
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    allPrismicProjectDesktop {
+      edges {
+        node {
+          uid
+          data {
+            categories {
+              category {
+                slug
+                id
+              }
+            }
+            project_title {
+              text
+            }
+            year {
+              text
+            }
+            client {
+              text
+            }
+            location {
+              text
+            }
+            sector {
+              text
+            }
+            index_preview_img {
+              gatsbyImageData
+            }
+          }
+        }
+      }
+    }
     prismicProjectDesktop(uid: { eq: $uid }) {
       uid
       id
