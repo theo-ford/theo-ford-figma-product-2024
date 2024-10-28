@@ -369,7 +369,7 @@ const ProjectIndex = ({ data }) => {
           <ImgCon>
             <div>
               <GatsbyImage image={image} />
-              <ImgCaptionCon>
+              {/* <ImgCaptionCon>
                 <p>
                   This is an A0 photo of me in Philadelphia when I was two.
                   Mutaji (Grandma) had it hanging in her living room next to a
@@ -378,7 +378,7 @@ const ProjectIndex = ({ data }) => {
                   time I was bitter because my sister got money, but with age
                   this feels priceless.
                 </p>
-              </ImgCaptionCon>
+              </ImgCaptionCon> */}
             </div>
           </ImgCon>
           <div>
@@ -388,14 +388,15 @@ const ProjectIndex = ({ data }) => {
                   <span className="bold">Theo Ford</span> believes in...
                   <br></br>
                   <br></br>
-                  meaningful improvement.<br></br>
-                  fun, joy, humour and playfulness.<br></br>
-                  celebrating the everyday.<br></br>
-                  efficient use of resources.<br></br>
-                  intuition + logic + play + strategy. <br></br>
-                  listening to people.<br></br>
-                  doing things yourself.<br></br>
-                  tools.<br></br>
+                  meaningful improvement<br></br>
+                  fun, joy, humour and playfulness<br></br>
+                  {/* the everyday<br></br> */}
+                  efficient use of resources<br></br>
+                  intuition + logic + play + strategy<br></br>
+                  {/* listening to people<br></br> */}
+                  doing things yourself<br></br>
+                  curiosity<br></br>
+                  tools<br></br>
                 </p>
               </div>
             </BodyTextCon>
