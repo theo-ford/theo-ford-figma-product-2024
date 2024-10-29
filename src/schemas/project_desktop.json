@@ -512,6 +512,14 @@
                   "default_value": "120px",
                   "label": "Row Margin Top"
                 }
+              },
+              "mobile_image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Mobile Image"
+                }
               }
             },
             "repeat": {}
@@ -636,6 +644,14 @@
                   "label": "Video"
                 }
               },
+              "poster_image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Poster Image"
+                }
+              },
               "small_video": {
                 "type": "Link",
                 "config": {
@@ -643,12 +659,12 @@
                   "label": "Small Video"
                 }
               },
-              "poster_image": {
+              "mobile_poster": {
                 "type": "Image",
                 "config": {
                   "constraint": {},
                   "thumbnails": [],
-                  "label": "Poster Image"
+                  "label": "Mobile Poster"
                 }
               },
               "column_width": {

@@ -24,22 +24,6 @@ const GlobalStyle = createGlobalStyle`
   }
   
 `;
-const PageConCon = styled.div`
-  width: calc(100% - 25px);
-  margin: 12.5px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr /* 1 */ 1fr 1fr 1fr 1fr /* 2 */ 1fr 1fr 1fr 1fr /* 3 */ 1fr 1fr 1fr 1fr /* 4 */;
-  grid-gap: 12.5px;
-  @media (max-width: 666px) {
-    /* width: calc(100% - 25px);
-    margin-left: 12.5px;
-    top: 10px; */
-    width: calc(100% - 20px);
-    margin-left: 10px;
-    top: 10px;
-    grid-gap: 10px;
-  }
-`;
 const LogoTitleCon = styled.div`
   position: sticky;
   top: 12.5px;
@@ -52,16 +36,10 @@ const LogoTitleCon = styled.div`
     float: left;
     position: relative;
     color: white;
-    /* margin-left: 63px; */
   }
-`;
-const LogoCon = styled.div`
-  mix-blend-mode: exclusion;
-  display: inline-block;
-  width: calc(65px);
-  top: 0;
-  float: left;
-  position: relative;
+  @media (max-width: 666px) {
+    display: none;
+  }
 `;
 const MenuCon = styled.div`
   mix-blend-mode: exclusion;
@@ -70,6 +48,15 @@ const MenuCon = styled.div`
   position: sticky;
   top: 12.5px;
   width: 30%;
+  @media (max-width: 1024px) {
+    margin-left: calc(50vw + 7px);
+  }
+  @media (max-width: 666px) {
+    margin-left: 10px;
+    width: 100%;
+    top: 10px;
+    width: calc(100vw - 20px);
+  }
 `;
 
 const DesktopNavP = styled.p`
@@ -104,6 +91,14 @@ const IntroTextCon = styled.div`
   p {
     font-size: 24px;
   }
+  @media (max-width: 666px) {
+    grid-column: span 16;
+    p {
+      width: calc(100%);
+      margin-left: 0px;
+      font-size: 16px;
+    }
+  }
 `;
 const CategoryName = styled.span`
   text-transform: capitalize;
@@ -112,7 +107,6 @@ const MetaCon = styled.div`
   height: auto;
   width: calc(100% - 25px);
   margin-left: 12.5px;
-  /* background-color: red; */
   margin-bottom: 10px;
 `;
 const Grid16 = styled.div`
@@ -121,9 +115,17 @@ const Grid16 = styled.div`
   grid-gap: 12.5px;
   width: calc(100% - 25px);
   margin-left: 12.5px;
+
+  @media (max-width: 666px) {
+    grid-template-columns: 1fr 1fr 1fr 1fr /* 1 */ 1fr 1fr 1fr 1fr /* 2 */ 1fr 1fr 1fr 1fr /* 3 */ 1fr 1fr 1fr 1fr /* 4 */;
+    grid-gap: 10px;
+    width: calc(100% - 20px);
+    margin-left: 10px;
+  }
 `;
 const BodyTextCon = styled.div`
   grid-column: span 16;
+
   p {
     width: calc(50% - 6.25px);
     margin-left: calc(50% + 6.25px);
@@ -137,6 +139,14 @@ const BodyTextCon = styled.div`
       return "0px";
     }
   }};
+
+  @media (max-width: 666px) {
+    p {
+      width: calc(100%);
+      margin-left: 0px;
+      font-size: 16px;
+    }
+  }
 `;
 
 const FullBleedImgCon = styled.div`
@@ -147,7 +157,6 @@ const FullBleedImgCon = styled.div`
 const FullBleedImgConCon = styled.div`
   width: ${props => {
     const columnWidth = props.columnWidth;
-
     if (columnWidth === "16") {
       return "100%";
     } else if (columnWidth === "8") {
@@ -157,7 +166,6 @@ const FullBleedImgConCon = styled.div`
 
   margin-left: ${props => {
     const columnStart = props.columnStart;
-
     if (columnStart === "0") {
       return "0%";
     } else if (columnStart === "8") {
@@ -169,7 +177,6 @@ const SquareImgCon = styled.div`
   margin-top: ${props => {
     const rowMarginTop = props.RowMarginTop;
     const imgMarginTop = props.ImgMarginTop;
-
     if (rowMarginTop === "120px" && imgMarginTop === "0vw") {
       return "120px";
     } else if (rowMarginTop === "120px" && imgMarginTop === "12.5vw") {
@@ -186,7 +193,6 @@ const SquareImgCon = styled.div`
   grid-column: ${props => {
     const columnWidth = props.columnWidth;
     const columnStart = props.columnStart;
-
     if (columnWidth === "8" && columnStart === "0") {
       return "1 / span 8";
     } else if (columnWidth === "8" && columnStart === "4") {
@@ -204,7 +210,9 @@ const SquareImgCon = styled.div`
     }
   }};
 
-  /* margin-top: calc(10vw + 100px); */
+  @media (max-width: 666px) {
+    grid-column: span 16;
+  }
 `;
 
 const Caption = styled.div`
@@ -214,7 +222,6 @@ const Caption = styled.div`
     max-width: 50vw;
     font-size: ${props => {
       const captionFontSize = props.CaptionFontSize;
-
       if (captionFontSize === "16px") {
         return "16px";
       } else if (captionFontSize === "12px") {
@@ -223,7 +230,6 @@ const Caption = styled.div`
     }};
     margin-top: ${props => {
       const captionFontSize = props.CaptionFontSize;
-
       if (captionFontSize === "16px") {
         return "6px";
       } else if (captionFontSize === "12px") {
@@ -251,7 +257,6 @@ const BlackFilmsModuleCon = styled.div`
 const BlackFilmsModuleConCon = styled.div`
   width: ${props => {
     const columnWidth = props.columnWidth;
-
     if (columnWidth === "16") {
       return "100%";
     } else if (columnWidth === "8") {
@@ -261,7 +266,6 @@ const BlackFilmsModuleConCon = styled.div`
 
   margin-left: ${props => {
     const columnStart = props.columnStart;
-
     if (columnStart === "0") {
       return "0%";
     } else if (columnStart === "8") {
@@ -281,17 +285,20 @@ const MoreProjects = styled.div`
 
   div {
     grid-column: span 4;
-    /* display: inline-block;
-    float: left;
-    position: relative;
-    width: 25%; */
-  }
-  p {
-    /* font-size: 100px; */
   }
 
-  /* font-weight: bold;
-  font-family: "HelveticaNowDisplay"; */
+  @media (max-width: 1024px) {
+    div {
+      grid-column: span 8;
+    }
+  }
+
+  @media (max-width: 666px) {
+    div {
+      grid-column: span 16;
+    }
+  }
+
   img {
     width: 100%;
   }
@@ -305,11 +312,19 @@ const MoreProjects = styled.div`
     padding-bottom: 12.5px;
   }
 `;
+
 const ResumeImage = styled.div`
   width: 100%;
   height: 418px;
   margin-top: 32px;
   background-color: black;
+`;
+const MobileProjectTitleYearLocation = styled.div`
+  margin-bottom: 100px;
+  display: none;
+  @media (max-width: 666px) {
+    display: block;
+  }
 `;
 
 const ProjectDesktop = ({ data }) => {
@@ -430,36 +445,50 @@ const ProjectDesktop = ({ data }) => {
     (content, index) => {
       if (content.slice_type == "full_bleed_image") {
         const image = getImage(content.primary.image1);
-
-        return (
-          <>
-            <FullBleedImgCon>
-              <FullBleedImgConCon
-                columnStart={content.primary.column_start}
-                columnWidth={content.primary.column_width}
-              >
-                <GatsbyImage image={image} />
-                <Caption
-                  style={{ marginLeft: "12.5px" }}
-                  CaptionFontSize={content.primary.caption_font_size}
+        const mobileImage = getImage(content.primary.mobile_image);
+        if (isPageWide) {
+          return (
+            <>
+              <FullBleedImgCon>
+                <FullBleedImgConCon
+                  columnStart={content.primary.column_start}
+                  columnWidth={content.primary.column_width}
                 >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: content.primary.caption.html,
-                    }}
-                  />
-                </Caption>
-              </FullBleedImgConCon>
-            </FullBleedImgCon>
-          </>
-        );
+                  <GatsbyImage image={image} />
+                  <Caption
+                    style={{ marginLeft: "12.5px" }}
+                    CaptionFontSize={content.primary.caption_font_size}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: content.primary.caption.html,
+                      }}
+                    />
+                  </Caption>
+                </FullBleedImgConCon>
+              </FullBleedImgCon>
+            </>
+          );
+        } else {
+          return (
+            <SquareImgCon
+              RowMarginTop={content.primary.row_margin_top}
+              ImgMarginTop={content.primary.margin_top}
+            >
+              <GatsbyImage image={mobileImage} />
+              <Caption CaptionFontSize={content.primary.caption_font_size}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: content.primary.caption.html,
+                  }}
+                />
+              </Caption>
+            </SquareImgCon>
+          );
+        }
       }
       if (content.slice_type == "image") {
         const image = getImage(content.primary.image);
-        // console.log(content.primary.margin_top);
-        // console.log(content.primary.row_margin_top);
-        // console.log(content.primary.column_start);
-        // console.log(content.primary.column_width);
         return (
           <>
             <SquareImgCon
@@ -482,15 +511,13 @@ const ProjectDesktop = ({ data }) => {
       }
       if (content.slice_type == "text") {
         return (
-          <>
-            <BodyTextCon RowMarginTop={content.primary.row_margin_top}>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: content.primary.text.html,
-                }}
-              />
-            </BodyTextCon>
-          </>
+          <BodyTextCon RowMarginTop={content.primary.row_margin_top}>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: content.primary.text.html,
+              }}
+            />
+          </BodyTextCon>
         );
       }
       if (content.slice_type == "video") {
@@ -517,7 +544,7 @@ const ProjectDesktop = ({ data }) => {
             </SquareImgCon>
           );
         } else {
-          const posterImgProps = content.primary.index_image;
+          const posterImgProps = content.primary.mobile_poster;
           return (
             <SquareImgCon
               columnStart={content.primary.column_start}
@@ -542,34 +569,58 @@ const ProjectDesktop = ({ data }) => {
       }
       if (content.slice_type == "full_bleed_video") {
         const posterImgProps = content.primary.poster_image;
-
-        return (
-          <>
-            <FullBleedImgCon>
-              <FullBleedImgConCon
-                columnStart={content.primary.column_start}
-                columnWidth={content.primary.column_width}
-                RowMarginTop={content.primary.row_margin_top}
-              >
-                <AutoPlayVideo
-                  srcProps={content.primary.video.url}
-                  posterProps={posterImgProps}
-                />
-                <Caption
-                  style={{ marginLeft: "12.5px" }}
-                  CaptionFontSize={content.primary.caption_font_size}
+        if (isPageWide) {
+          return (
+            <>
+              <FullBleedImgCon>
+                <FullBleedImgConCon
+                  columnStart={content.primary.column_start}
+                  columnWidth={content.primary.column_width}
+                  RowMarginTop={content.primary.row_margin_top}
                 >
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: content.primary.caption.html,
-                    }}
+                  <AutoPlayVideo
+                    srcProps={content.primary.video.url}
+                    posterProps={posterImgProps}
                   />
-                </Caption>
-              </FullBleedImgConCon>
-            </FullBleedImgCon>
-          </>
-        );
+                  <Caption
+                    style={{ marginLeft: "12.5px" }}
+                    CaptionFontSize={content.primary.caption_font_size}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: content.primary.caption.html,
+                      }}
+                    />
+                  </Caption>
+                </FullBleedImgConCon>
+              </FullBleedImgCon>
+            </>
+          );
+        } else {
+          const posterImgProps = content.primary.mobile_poster;
+          return (
+            <SquareImgCon
+              columnStart={content.primary.column_start}
+              columnWidth={content.primary.column_width}
+              RowMarginTop={content.primary.row_margin_top}
+              ImgMarginTop={content.primary.margin_top}
+            >
+              <AutoPlayVideo
+                srcProps={content.primary.small_video.url}
+                posterProps={posterImgProps}
+              />
+              <Caption CaptionFontSize={content.primary.caption_font_size}>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: content.primary.caption.html,
+                  }}
+                />
+              </Caption>
+            </SquareImgCon>
+          );
+        }
       }
+
       if (content.slice_type == "black_films_module") {
         const posterImage = content.primary.poster_image;
         // console.log(posterImage);
@@ -612,11 +663,6 @@ const ProjectDesktop = ({ data }) => {
         </title>
       </Helmet>
       <LogoTitleCon>
-        {/* <LogoCon>
-          <Link to="/">
-            <Logo />
-          </Link>
-        </LogoCon> */}
         <p>
           {" "}
           <span style={{ fontWeight: "bold" }}>Theo Ford</span>
@@ -642,6 +688,15 @@ const ProjectDesktop = ({ data }) => {
       <PageCon>
         <IntroCon>
           <IntroTextCon>
+            <MobileProjectTitleYearLocation>
+              <p>
+                Project: {data.prismicProjectDesktop.data.project_title.text}
+                <br></br>
+                Year: {data.prismicProjectDesktop.data.year.text}
+                <br></br>
+                Location: {data.prismicProjectDesktop.data.location.text}
+              </p>
+            </MobileProjectTitleYearLocation>
             <div
               dangerouslySetInnerHTML={{
                 __html: data.prismicProjectDesktop.data.intro_text.html,
@@ -811,6 +866,9 @@ export const query = graphql`
               image1 {
                 gatsbyImageData
               }
+              mobile_image {
+                gatsbyImageData
+              }
               caption {
                 html
               }
@@ -860,6 +918,9 @@ export const query = graphql`
               }
               small_video {
                 url
+              }
+              mobile_poster {
+                gatsbyImageData
               }
               row_margin_top
               poster_image {
