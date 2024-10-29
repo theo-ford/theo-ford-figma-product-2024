@@ -72,6 +72,27 @@
         "label": "Index Preview Img"
       }
     },
+    "index_image_column_start": {
+      "type": "Select",
+      "config": {
+        "options": [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12"
+        ],
+        "default_value": "1",
+        "label": "index image column start"
+      }
+    },
     "related_projects_group": {
       "type": "Group",
       "config": {

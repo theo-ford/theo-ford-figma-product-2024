@@ -349,8 +349,6 @@ const ProjectDesktop = ({ data }) => {
         projects[currentProjectPageNumber - 1]
       : projects[0];
 
-  console.log(prevProjectUid);
-
   const prevProjectContent = data.prismicProjectIndexSelect.data.project_relationship_group.filter(
     project =>
       project.project_relationship_field.document.uid === prevProjectUid
@@ -358,29 +356,17 @@ const ProjectDesktop = ({ data }) => {
 
   var x = undefined;
   if (currentProjectPageNumber === 0) {
-    // console.log(true);
     x = true;
   } else {
-    // console.log(false);
     x = false;
   }
 
   var y = undefined;
   if (currentProjectPageNumber === projects.length - 1) {
-    // console.log(true);
     y = true;
   } else {
-    // console.log(false);
     y = false;
   }
-  console.log("y = " + y);
-  // console.log(nextProjectContent);
-  // console.log(nextProjectContent[0]);
-  // console.log(nextProjectContent[0].project_relationship_field.document.uid);
-  // console.log(
-  //   nextProjectContent[0].project_relationship_field.document.data.project_title
-  //     .text
-  // );
 
   const PrevProject = () => {
     return (

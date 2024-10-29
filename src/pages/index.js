@@ -33,7 +33,10 @@ const GlobalStyle = createGlobalStyle`
     // https://stackoverflow.com/questions/47095596/body-overflow-x-hidden-breaks-position-sticky
     background-color: black;
     overflow-x: clip;
-    max-width: 100vw;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
   }
   p {
     letter-spacing: -0.2px;
@@ -91,13 +94,6 @@ const DesktopNavP = styled.p`
   @media (max-width: 666px) {
     display: none;
   }
-
-  &aria-current {
-    color: white;
-  }
-  /* a {
-    color: white;
-  } */
 `;
 
 /* MOBILE */
@@ -121,24 +117,44 @@ const MobileNavP = styled.p`
   }
 `;
 
-const PageCon = styled.div`
-  background-color: black;
-  min-height: 100vh;
-  /* min-height: 100vh; */
-  /* overflow: hidden; */
-  padding-bottom: 18vh;
-  /* margin-top: 400px; */
-  @media (max-width: 666px) {
-    padding-bottom: 0vh;
-  }
+/* - - - - - - - top level container */
+const ProjectsCon = styled.div`
+  display: block;
+  float: left;
+  position: relative;
+  z-index: 300;
+  height: 100vh;
+  width: 100vw;
 `;
-const WhiteText = styled.p`
-  color: white;
+
+const ImgConConCon = styled.div`
+  display: block;
+  float: left;
+  position: fixed;
+  z-index: 00;
+  width: 100%;
+  height: 100vh;
 `;
+const ImgConCon = styled.div`
+  position: relative;
+  float: left;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 12.5px;
+  margin-left: 12.5px;
+  grid-row-gap: 0;
+  width: calc(100% - 25px);
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+  /* background-color: red; */
+`;
+
+/* - - - - - - - other page stuff */
 const TableCon = styled.div`
+  z-index: 3000;
   margin-top: 20px;
   margin-bottom: 20px;
-  /* background-color: blue; */
 `;
 const Grid16 = styled.div`
   display: grid;
@@ -155,26 +171,9 @@ const Grid16 = styled.div`
     grid-gap: 10px;
   }
 `;
-
-const ImageBorderCon = styled.div`
-  height: 2px;
-`;
-
-const IndexImgCon = styled.div`
-  grid-column: 5 / span 4;
-  @media (max-width: 666px) {
-    display: none;
-  }
-`;
 const IndexImg = styled.div`
   width: 100%;
   opacity: 0;
-  /* border-radius: 10px;
-  overflow: hidden; */
-  /* position: absolute; */
-  /* &:first-child {
-    opacity: 1;
-  } */
 `;
 const IndexBodyP = styled.p`
   color: white;
@@ -186,6 +185,7 @@ const IndexBodyP = styled.p`
   letter-spacing: -0.2px;
 `;
 const ProjectCon = styled.div`
+  z-index: 3000;
   &:hover ${IndexImg} {
     opacity: 1;
   }
@@ -252,27 +252,6 @@ const IndexTitleP = styled.p`
   color: white;
   letter-spacing: -0.3px;
 `;
-const CategoryMenuConCon = styled.div`
-  width: calc(18.75% - 12.5px);
-  margin-left: calc(81.25% + 12.5px);
-  top: 12.5px;
-  /* top: 100px; */
-  position: absolute;
-  z-index: 1000000;
-
-  @media (max-width: 666px) {
-    margin-top: 70px;
-    width: calc(100% - 20px);
-    margin-left: calc(10px);
-
-    /* display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px; */
-  }
-`;
-const CategoryMenuCon = styled.div`
-  /* grid-column: 2 / span 1; */
-`;
 
 const CategoryItem = styled.span`
   font-size: 16px;
@@ -281,27 +260,11 @@ const CategoryItem = styled.span`
     color: white;
   }
 `;
-const TextImgToggleP = styled.p`
-  color: #878787;
-  span.active {
-    color: white;
-  }
-`;
 const CategoryName = styled.span`
   text-transform: capitalize;
   font-size: 16px;
   letter-spacing: -0.3px;
 `;
-const TitleCon = styled.div`
-  p {
-    font-size: 100px;
-    color: white;
-    font-family: "HelveticaNowDisplay";
-    font-weight: bold;
-    letter-spacing: -1px;
-  }
-`;
-
 const PageTitleCon = styled.div`
   position: fixed;
   top: 12.5px;
@@ -321,12 +284,90 @@ const NumCon = styled.div`
   bottom: 12.5px;
   left: 12.5px;
 `;
+
+const handlePosition = columnProp => {
+  switch (columnProp) {
+    case 1:
+      return "1";
+    case 2:
+      return "2";
+    case 3:
+      return "3";
+    case 4:
+      return "4";
+    case 5:
+      return "5";
+    case 6:
+      return "6";
+    case 7:
+      return "7";
+    case 8:
+      return "8";
+    case 9:
+      return "9";
+    case 10:
+      return "10";
+    case 11:
+      return "11";
+    case 12:
+      return "12";
+  }
+};
+
+const ImgCon = styled.div`
+  /* grid-column: span 4; */
+  /* grid-column-start: 8; */
+  display: none;
+  grid-column: ${props => {
+    const column = props.columnProp;
+
+    if (column === "1") {
+      return "1 / span 4";
+    } else if (column === "2") {
+      return "2 / span 4";
+    } else if (column === "3") {
+      return "3 / span 4";
+    } else if (column === "4") {
+      return "4 / span 4";
+    } else if (column === "5") {
+      return "5 / span 4";
+    } else if (column === "6") {
+      return "6 / span 4";
+    } else if (column === "7") {
+      return "7 / span 4";
+    } else if (column === "8") {
+      return "9 / span 4";
+    } else if (column === "9") {
+      return "9 / span 4";
+    } else if (column === "10") {
+      return "10 / span 4";
+    } else if (column === "11") {
+      return "11 / span 4";
+    } else if (column === "12") {
+      return "12 / span 4";
+    }
+  }};
+  /* grid-column: 9 / span 4; */
+
+  ${({ activeProp }) =>
+    activeProp &&
+    `
+    display: block;  
+  `}
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
 const SlideShowCon = styled.div``;
 const ProjectIndex = ({ data }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
   const LogoConRef = useRef(null);
   const [activeCategory, setCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");
@@ -360,7 +401,6 @@ const ProjectIndex = ({ data }) => {
                 >
                   About
                 </Link>
-                {/* <br></br>Instagram, Twitter */}
               </DesktopNavP>
             </MenuCon>
           </LogoGridCon>
@@ -406,12 +446,50 @@ const ProjectIndex = ({ data }) => {
     }
   );
 
-  // const organisedArray = projectIndexSelectArray.sort(function(a, b) {
-  //   return (
-  //     b.content.project_relationship_field.document.data.year.text -
-  //     a.content.project_relationship_field.document.data.year.text
-  //   );
-  // });
+  const activeIndexFunction = (e, index) => {
+    console.log("Hello");
+    e.persist();
+    setActiveIndex(index);
+  };
+
+  const images = projectIndexSelectArray.map((content, index) => {
+    const [imgState, setImgState] = useState(false);
+    const videoRef = useRef(null);
+
+    // console.log(
+    //   content.content.project_relationship_field.document.data
+    //     .index_image_column_start
+    // );
+
+    useEffect(() => {
+      if (activeIndex === index) {
+        setImgState(true);
+      } else {
+        setImgState(false);
+      }
+    }, [activeIndex]);
+
+    var index_image = getImage(
+      content.content.project_relationship_field.document.data.index_preview_img
+    );
+    console.log(
+      content.content.project_relationship_field.document.data
+        .index_image_column_start
+    );
+    return (
+      <>
+        <ImgCon
+          columnProp={
+            content.content.project_relationship_field.document.data
+              .index_image_column_start
+          }
+          activeProp={imgState}
+        >
+          <GatsbyImage image={index_image} />
+        </ImgCon>
+      </>
+    );
+  });
 
   const organisedArrayMap = projectIndexSelectArray
     .filter(project => {
@@ -434,21 +512,12 @@ const ProjectIndex = ({ data }) => {
             to={`/${content.content.project_relationship_field.document.uid}`}
           >
             <ProjectCon>
-              <ImageBorderCon>
-                <Grid16>
-                  <IndexImgCon>
-                    <IndexImg className="index_img">
-                      <GatsbyImage image={index_image} />
-                    </IndexImg>
-                  </IndexImgCon>
-                  <Border></Border>
-                </Grid16>
-              </ImageBorderCon>
-
               <InformationCon>
                 <Grid16>
                   <ImgSpacer></ImgSpacer>
-                  <ProjectTitleCon>
+                  <ProjectTitleCon
+                    onMouseEnter={e => activeIndexFunction(e, index)}
+                  >
                     <IndexBodyP>
                       {
                         content.content.project_relationship_field.document.data
@@ -456,22 +525,6 @@ const ProjectIndex = ({ data }) => {
                       }
                     </IndexBodyP>
                   </ProjectTitleCon>
-                  {/* <ClientCon>
-                    <IndexBodyP>
-                      {
-                        content.content.project_relationship_field.document.data
-                          .client.text
-                      }
-                    </IndexBodyP>
-                  </ClientCon> */}
-                  {/* <SectorCon>
-                    <IndexBodyP>
-                      {
-                        content.content.project_relationship_field.document.data
-                          .sector.text
-                      }
-                    </IndexBodyP>
-                  </SectorCon> */}
                   <CategoryCon>
                     <IndexBodyP>
                       {" "}
@@ -555,36 +608,24 @@ const ProjectIndex = ({ data }) => {
         <title>Theo Ford – Index</title>
       </Helmet>
 
-      <PageCon>
-        <Nav></Nav>
-        <PageTitleCon>
-          <div>
-            <TheoFord />
-            <S></S>
-          </div>
-          <div>
-            <PortfolioForFigma />
-          </div>
-        </PageTitleCon>
+      <Nav></Nav>
+      <PageTitleCon>
+        <div>
+          <TheoFord />
+          <S></S>
+        </div>
+        <div>
+          <PortfolioForFigma />
+        </div>
+      </PageTitleCon>
 
-        {/* <CategoryMenuConCon>
-          <CategoryMenuCon>
-            <Categories></Categories>
-          </CategoryMenuCon>
-        </CategoryMenuConCon> */}
-
+      <ProjectsCon>
         <TableHeaderCon>
           <Grid16>
             <ImgSpacer></ImgSpacer>
             <ProjectTitleCon>
               <IndexTitleP>Project</IndexTitleP>
             </ProjectTitleCon>
-            {/* <ClientCon>
-              <IndexTitleP>Client</IndexTitleP>
-            </ClientCon> */}
-            {/* <SectorCon>
-              <IndexTitleP>Sector</IndexTitleP>
-            </SectorCon> */}
             <CategoryCon>
               <IndexTitleP>Category</IndexTitleP>
             </CategoryCon>
@@ -597,11 +638,14 @@ const ProjectIndex = ({ data }) => {
           </Grid16>
         </TableHeaderCon>
         <TableCon>{organisedArrayMap}</TableCon>
-        {/* <SlideshowCon></SlideshowCon> */}
-        <NumCon>
-          <p>1</p>
-        </NumCon>
-      </PageCon>
+      </ProjectsCon>
+      <ImgConConCon>
+        <ImgConCon>{images}</ImgConCon>
+      </ImgConConCon>
+
+      <NumCon>
+        <p>1</p>
+      </NumCon>
     </>
   );
 };
@@ -644,6 +688,7 @@ export const query = graphql`
                   index_preview_img {
                     gatsbyImageData
                   }
+                  index_image_column_start
                 }
               }
             }
