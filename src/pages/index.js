@@ -44,47 +44,9 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 /* BOTH */
-const LogoGridCon = styled.div`
-  width: calc(100% - 25px);
-  margin-left: 12.5px;
-  position: sticky;
-  top: 12.5px;
-  z-index: 300000;
-  mix-blend-mode: exclusion;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-gap: 12.5px;
-  @media (max-width: 666px) {
-    width: calc(100% - 20px);
-    margin-left: 10px;
-    top: 10px;
-    /* width: calc(100% - 2px);
-    margin-left: 12.5px;
-    top: 12.5px; */
-  }
-`;
+
 /* DESKTOP */
-const LogoConCon = styled.div`
-  grid-column: span 1;
-  mix-blend-mode: exclusion;
-`;
-const MenuCon = styled.div`
-  grid-column: 3 / span 2;
-  mix-blend-mode: exclusion;
-`;
-const LogoCon = styled.div`
-  mix-blend-mode: exclusion;
-  width: calc(100%);
-  vertical-align: top;
-  transition: all 2s;
-  vertical-align: top;
-  p {
-    color: white;
-    span {
-      font-variation-settings: "wght" 600;
-    }
-  }
-`;
+
 const DesktopNavP = styled.p`
   color: #878787;
   mix-blend-mode: exclusion;
@@ -118,13 +80,20 @@ const MobileNavP = styled.p`
 `;
 
 /* - - - - - - - top level container */
+const MenuCon = styled.div`
+  position: fixed;
+  top: 12.5px;
+  left: calc(50vw + 12px);
+`;
+
 const ProjectsCon = styled.div`
   display: block;
   float: left;
-  position: relative;
+  position: fixed;
   z-index: 300;
-  height: 100vh;
-  width: 100vw;
+  /* height: 100vh;
+  width: 100vw; */
+  bottom: 12.5px;
 `;
 
 const ImgConConCon = styled.div`
@@ -196,18 +165,11 @@ const ProjectCon = styled.div`
     opacity: 1;
   } */
 `;
-const Border = styled.div`
-  grid-column: span 14;
-  /* border-top: 1px solid white; */
-  @media (max-width: 666px) {
-    grid-column: span 16;
-  }
-`;
 const InformationCon = styled.div`
   height: 20px;
 `;
 const ImgSpacer = styled.div`
-  grid-column: span;
+  grid-column: span 8;
   @media (max-width: 666px) {
     display: none;
   }
@@ -242,9 +204,7 @@ const YearCon = styled.div`
   }
 `;
 
-const TableHeaderCon = styled.div`
-  margin-top: 82vh;
-`;
+const TableHeaderCon = styled.div``;
 
 const IndexTitleP = styled.p`
   font-size: 12px;
@@ -388,7 +348,7 @@ const ProjectIndex = ({ data }) => {
     if (isPageWide) {
       return (
         <>
-          <LogoGridCon>
+          <>
             <MenuCon>
               <DesktopNavP>
                 <Link to="/" className="selected">
@@ -403,14 +363,14 @@ const ProjectIndex = ({ data }) => {
                 </Link>
               </DesktopNavP>
             </MenuCon>
-          </LogoGridCon>
+          </>
         </>
       );
     }
     if (!isPageWide) {
       return (
         <>
-          <LogoGridCon>
+          <>
             <MobileLeftCol>
               <Link to="">
                 <MobileNavP
@@ -435,7 +395,7 @@ const ProjectIndex = ({ data }) => {
                 </Link>
               </MobileNavP>
             </MobileRightCol>
-          </LogoGridCon>
+          </>
         </>
       );
     }
