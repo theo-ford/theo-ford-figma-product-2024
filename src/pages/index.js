@@ -91,6 +91,7 @@ const ProjectsCon = styled.div`
   float: left;
   position: fixed;
   z-index: 300;
+  width: 100%;
   /* height: 100vh;
   width: 100vw; */
   bottom: 12.5px;
@@ -604,7 +605,7 @@ const ProjectIndex = ({ data }) => {
       </ImgConConCon>
 
       <NumCon>
-        <p>1</p>
+        <p>{activeIndex}</p>
       </NumCon>
     </>
   );
