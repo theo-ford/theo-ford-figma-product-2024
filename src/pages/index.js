@@ -148,7 +148,7 @@ const IndexImg = styled.div`
 const IndexBodyP = styled.p`
   color: white;
   font-size: 16px;
-  opacity: 0.5;
+  /* opacity: 0.5; */
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
@@ -156,15 +156,27 @@ const IndexBodyP = styled.p`
 `;
 const ProjectCon = styled.div`
   z-index: 3000;
-  &:hover ${IndexImg} {
-    opacity: 1;
-  }
-  &:hover ${IndexBodyP} {
-    opacity: 1;
-  }
-  /* &:nth-child(1) .index_img {
+  /* opacity: 0.5; */
+
+  
+  opacity: ${props => {
+    console.log("hello");
+    const activeProject = props.activeProject;
+    const index = props.projectIndex;
+
+    if (activeProject === index) {
+      return "1";
+    } else {
+      return "0.5";
+    }
+  }};
+
+  /* &:hover ${IndexBodyP} {
     opacity: 1;
   } */
+  
+    // ${({ activeProject }) => activeProject && console.log(activeProject)}
+
 `;
 const InformationCon = styled.div`
   height: 20px;
@@ -306,6 +318,8 @@ const ImgCon = styled.div`
       return "11 / span 4";
     } else if (column === "12") {
       return "12 / span 4";
+    } else if (column === "13") {
+      return "13 / span 4";
     }
   }};
   /* grid-column: 9 / span 4; */
@@ -325,10 +339,12 @@ const ImgCon = styled.div`
 const SlideShowCon = styled.div``;
 const ProjectIndex = ({ data }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
-  const LogoConRef = useRef(null);
   const [activeCategory, setCategory] = useState(null);
-  const [categoriesVisible, setCategoriesVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // useEffect(() => {
+  //   console.log(activeIndex);
+  // }, [activeIndex]);
 
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");
@@ -348,55 +364,47 @@ const ProjectIndex = ({ data }) => {
 
     if (isPageWide) {
       return (
-        <>
-          <>
-            <MenuCon>
-              <DesktopNavP>
-                <Link to="/" className="selected">
-                  Index,{" "}
-                </Link>
-                <Link to="/resume">Resume, </Link>
-                <Link
-                  to="/about"
-                  className={currentPage == "about" ? "selected" : ""}
-                >
-                  About
-                </Link>
-              </DesktopNavP>
-            </MenuCon>
-          </>
-        </>
+        <MenuCon>
+          <DesktopNavP>
+            <Link to="/" className="selected">
+              Index,{" "}
+            </Link>
+            <Link to="/resume">Resume, </Link>
+            <Link
+              to="/about"
+              className={currentPage == "about" ? "selected" : ""}
+            >
+              About
+            </Link>
+          </DesktopNavP>
+        </MenuCon>
       );
     }
     if (!isPageWide) {
       return (
         <>
-          <>
-            <MobileLeftCol>
-              <Link to="">
-                <MobileNavP
-                  className={currentPage == "project_index" ? "selected" : ""}
-                >
-                  Index
-                </MobileNavP>
-              </Link>
-            </MobileLeftCol>
-
-            <MobileRightCol>
-              <Link to="/about">
-                <MobileNavP
-                  className={currentPage == "about" ? "selected" : ""}
-                >
-                  About
-                </MobileNavP>
-              </Link>
-              <MobileNavP>
-                <Link target="_blank" to="https://www.instagram.com/tf.public/">
-                  <span style={{ marginLeft: "0px" }}>Instagram</span>
-                </Link>
+          <MobileLeftCol>
+            <Link to="">
+              <MobileNavP
+                className={currentPage == "project_index" ? "selected" : ""}
+              >
+                Index
               </MobileNavP>
-            </MobileRightCol>
-          </>
+            </Link>
+          </MobileLeftCol>
+
+          <MobileRightCol>
+            <Link to="/about">
+              <MobileNavP className={currentPage == "about" ? "selected" : ""}>
+                About
+              </MobileNavP>
+            </Link>
+            <MobileNavP>
+              <Link target="_blank" to="https://www.instagram.com/tf.public/">
+                <span style={{ marginLeft: "0px" }}>Instagram</span>
+              </Link>
+            </MobileNavP>
+          </MobileRightCol>
         </>
       );
     }
@@ -408,19 +416,12 @@ const ProjectIndex = ({ data }) => {
   );
 
   const activeIndexFunction = (e, index) => {
-    console.log("Hello");
     e.persist();
     setActiveIndex(index);
   };
 
   const images = projectIndexSelectArray.map((content, index) => {
     const [imgState, setImgState] = useState(false);
-    const videoRef = useRef(null);
-
-    // console.log(
-    //   content.content.project_relationship_field.document.data
-    //     .index_image_column_start
-    // );
 
     useEffect(() => {
       if (activeIndex === index) {
@@ -433,10 +434,7 @@ const ProjectIndex = ({ data }) => {
     var index_image = getImage(
       content.content.project_relationship_field.document.data.index_preview_img
     );
-    console.log(
-      content.content.project_relationship_field.document.data
-        .index_image_column_start
-    );
+
     return (
       <>
         <ImgCon
@@ -467,19 +465,20 @@ const ProjectIndex = ({ data }) => {
         content.content.project_relationship_field.document.data
           .index_preview_img
       );
+      // console.log(index);
+      // console.log(activeIndex);
       return (
         <>
           <Link
             to={`/${content.content.project_relationship_field.document.uid}`}
           >
-            <ProjectCon>
+            <ProjectCon activeProject={activeIndex} projectIndex={index}>
               <InformationCon>
                 <Grid16>
-                  <ImgSpacer></ImgSpacer>
                   <ProjectTitleCon
                     onMouseEnter={e => activeIndexFunction(e, index)}
                   >
-                    <IndexBodyP>
+                    <IndexBodyP activeProject={activeIndex}>
                       {
                         content.content.project_relationship_field.document.data
                           .project_title.text
@@ -605,7 +604,7 @@ const ProjectIndex = ({ data }) => {
       </ImgConConCon>
 
       <NumCon>
-        <p>{activeIndex}</p>
+        <p>{activeIndex + 1}</p>
       </NumCon>
     </>
   );
