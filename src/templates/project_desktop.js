@@ -544,7 +544,7 @@ const ProjectDesktop = ({ data }) => {
             </SquareImgCon>
           );
         } else {
-          const posterImgProps = content.primary.mobile_poster;
+          const posterImgProps = content.primary.index_image;
           return (
             <SquareImgCon
               columnStart={content.primary.column_start}
