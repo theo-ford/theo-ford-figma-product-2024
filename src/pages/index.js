@@ -1,27 +1,13 @@
-import React, {
-  useRef,
-  useState,
-  useEffect,
-  createContext,
-  useContext,
-  useMemo,
-} from "react";
-import ReactDOM, { findDOMNode } from "react-dom";
-import { graphql, Link, useScrollRestoration } from "gatsby";
+import React, { useRef, useState, useEffect } from "react";
+import { graphql, Link } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
-import { ImageOrientation } from "../components/utils/image-orientation";
 import { Helmet } from "react-helmet";
 import { useMediaQuery } from "../components/tf/media-query";
-import Icon from "../../assets/WhiteLogo.svg";
 import TheoFord from "../../assets/TheoFord.svg";
 import S from "../../assets/S.svg";
 import PortfolioForFigma from "../../assets/PortfolioForFigma.svg";
-// import PlayButton from "../../assets/Logo.jpg";
-// import PlayButton from "../../public/icons/logo.jpg";
-import { NavGrid } from "../components/tf/nav-grid/nav";
-// import Icon from "../../assets/WhiteLogo.svg";
 
 const GlobalStyle = createGlobalStyle`
   html {
@@ -47,10 +33,36 @@ const GlobalStyle = createGlobalStyle`
       overflow: scroll;
     }
   }
+  @media (max-width: 1024px) {
+    html {
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    body {
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    
+  }
 `;
 
-/* DESKTOP */
+/* - - - - - - - navigation */
+const MenuCon = styled.div`
+  position: fixed;
+  top: 12.5px;
+  left: calc(50vw + 12px);
+  z-index: 50000;
 
+  @media (max-width: 1024px) {
+    left: calc(50vw + 7px);
+  }
+  @media (max-width: 666px) {
+    left: 10px;
+    width: 100%;
+    top: 10px;
+    width: calc(100vw - 20px);
+  }
+`;
 const DesktopNavP = styled.p`
   color: #878787;
   mix-blend-mode: exclusion;
@@ -59,222 +71,15 @@ const DesktopNavP = styled.p`
   }
 `;
 
-/* - - - - - - - top level container */
-const MenuCon = styled.div`
-  position: fixed;
-  top: 12.5px;
-  left: calc(50vw + 12px);
-  z-index: 50000;
-  @media (max-width: 666px) {
-    left: 10px;
-    width: 100%;
-    top: 10px;
-  }
-`;
-
-const ProjectsCon = styled.div`
-  display: block;
-  float: left;
-  position: fixed;
-  z-index: 300;
-  width: 100%;
-  /* height: 100vh;
-  width: 100vw; */
-  bottom: 12.5px;
-  @media (max-width: 666px) {
-    position: relative;
-  }
-`;
-
-const ImgConConCon = styled.div`
-  display: block;
-  float: left;
-  position: fixed;
-  z-index: 00;
-  width: 100%;
-  height: 100vh;
-`;
-const ImgConCon = styled.div`
-  position: relative;
-  float: left;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-column-gap: 12.5px;
-  margin-left: 12.5px;
-  grid-row-gap: 0;
-  width: calc(100% - 25px);
-  display: grid;
-  height: 100vh;
-  width: 100vw;
-  align-items: center;
-  /* background-color: red; */
-`;
-
-/* - - - - - - - other page stuff */
-const TableCon = styled.div`
-  z-index: 3000;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  @media (max-width: 666px) {
-    margin-top: 200px;
-  }
-`;
-const Grid16 = styled.div`
-  display: grid;
-  top: 12.5px;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-column-gap: 12.5px;
-  margin-left: 12.5px;
-  grid-row-gap: 0;
-  width: calc(100% - 25px);
-  z-index: 20000;
-  @media (max-width: 666px) {
-    width: calc(100% - 20px);
-    margin-left: 10px;
-    grid-gap: 10px;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-  }
-`;
-const IndexImg = styled.div`
-  width: 100%;
-  opacity: 0;
-`;
-const IndexBodyP = styled.p`
-  color: white;
-  font-size: 16px;
-  /* opacity: 0.5; */
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  letter-spacing: -0.2px;
-
-  /* @media (hover) {
-    color: red;
-  } */
-`;
-const ProjectCon = styled.div`
-  z-index: 3000;
-  /* opacity: 0.5; */
-
-  
-  opacity: ${props => {
-    console.log("hello");
-    const activeProject = props.activeProject;
-    const index = props.projectIndex;
-
-    if (activeProject === index) {
-      return "1";
-    } else {
-      return "0.5";
-    }
-  }};
-
-  /* &:hover ${IndexBodyP} {
-    opacity: 1;
-  } */
-  
-    // ${({ activeProject }) => activeProject && console.log(activeProject)}
-    
-    @media (hover: none) {
-      opacity: 1;
-      /* height: 500px; */
-      margin-top: 200px;
-    }
-`;
-const InformationCon = styled.div`
-  height: 20px;
-  @media (hover: none) {
-    height: auto;
-  }
-`;
-const ImgSpacer = styled.div`
-  grid-column: span 8;
-  @media (max-width: 666px) {
-    display: none;
-  }
-`;
-const MobileIndexNumberCon = styled.div`
-  display: none;
-  p {
-    font-size: 50px;
-    color: white;
-    font-family: "HelveticaNowDisplay";
-    font-weight: bold;
-  }
-  margin-bottom: -5px;
-  @media (hover: none) {
-    grid-column: span 4;
-    display: block;
-  }
-`;
-const MobileProjectImgCon = styled.div`
-  display: none;
-  grid-column: span 4;
-  @media (hover: none) {
-    display: block;
-  }
-`;
-const ProjectTitleCon = styled.div`
-  grid-column: 9 / span 2;
-  /* background-color: red; */
-  @media (max-width: 666px) {
-    grid-column: 1 / span 2;
-  }
-`;
-const CategoryCon = styled.div`
-  grid-column: 11 / span 3;
-  @media (hover: none) {
-    display: none;
-  }
-`;
-const LocationCon = styled.div`
-  grid-column: 14 / span 2;
-  margin-top: -15px;
-  /* background-color: green; */
-  @media (max-width: 666px) {
-    grid-column: 3 / span 2;
-    margin-top: 0px;
-  }
-`;
-const YearCon = styled.div`
-  /* background-color: yellow; */
-  grid-column: 16 / span 1;
-  @media (max-width: 666px) {
-    grid-column: 3 / span 2;
-    margin-top: -10px;
-  }
-`;
-
-const TableHeaderCon = styled.div`
-  @media (hover: none) {
-    display: none;
-  }
-`;
-
-const IndexTitleP = styled.p`
-  font-size: 12px;
-  opacity: 0.5;
-  color: white;
-  letter-spacing: -0.3px;
-`;
-
-const CategoryItem = styled.span`
-  font-size: 16px;
-  color: #878787;
-  &.active {
-    color: white;
-  }
-`;
-const CategoryName = styled.span`
-  text-transform: capitalize;
-  font-size: 16px;
-  letter-spacing: -0.3px;
-`;
 const PageTitleCon = styled.div`
   position: fixed;
   top: 12.5px;
   left: 12.5px;
   div {
     display: block;
+  }
+  @media (max-width: 1024px) {
+    position: relative;
   }
   @media (max-width: 666px) {
     margin-top: 200px;
@@ -293,24 +98,174 @@ const PageTitleCon = styled.div`
     }
   }
 `;
-const NumCon = styled.div`
-  p {
-    font-size: 100px;
-    color: white;
-    font-family: "HelveticaNowDisplay";
-    font-weight: bold;
-  }
+
+/* - - - - - - - ?????? */
+const ProjectsCon = styled.div`
+  display: block;
+  float: left;
   position: fixed;
+  z-index: 300;
+  width: 100%;
   bottom: 12.5px;
-  left: 12.5px;
+  @media (hover: none) {
+    position: relative;
+  }
+`;
+
+/* - - - - - - - content renders dependent on screen size */
+const DesktopTableCon = styled.div`
+  z-index: 3000;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+  @media (max-width: 666px) {
+    display: none;
+  }
+`;
+
+const TabletTableCon = styled.div`
+  display: none;
+  z-index: 3000;
+  @media (max-width: 1024px) {
+    display: block;
+    margin-top: 400px;
+    display: grid;
+    top: 12.5px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-column-gap: 12.5px;
+    margin-left: 12.5px;
+    grid-row-gap: 0;
+    width: calc(100% - 25px);
+    z-index: 20000;
+  }
+  @media (max-width: 666px) {
+    display: none;
+  }
+`;
+
+const MobileTableCon = styled.div`
+  display: none;
+  z-index: 3000;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+  @media (max-width: 666px) {
+    display: block;
+    margin-top: 200px;
+    display: block;
+    display: grid;
+    top: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+    margin-left: 10px;
+    grid-row-gap: 0;
+    width: calc(100% - 20px);
+    z-index: 20000;
+  }
+`;
+
+/* - - - - - - - desktop : image hover */
+const ImgConConCon = styled.div`
+  display: block;
+  float: left;
+  position: fixed;
+  z-index: 00;
+  width: 100%;
+  height: 100vh;
+  @media (max-width: 666px) {
+    display: none;
+  }
+`;
+const ImgConCon = styled.div`
+  position: relative;
+  float: left;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 12.5px;
+  margin-left: 12.5px;
+  grid-row-gap: 0;
+  width: calc(100% - 25px);
+  display: grid;
+  height: 100vh;
+  width: 100vw;
+  align-items: center;
+
+  /* background-color: red; */
+`;
+
+const Grid16 = styled.div`
+  display: grid;
+  top: 12.5px;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 12.5px;
+  margin-left: 12.5px;
+  grid-row-gap: 0;
+  width: calc(100% - 25px);
+  z-index: 20000;
+  @media (max-width: 1025px) {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+  @media (max-width: 666px) {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+`;
+
+const TableHeaderCon = styled.div`
   @media (hover: none) {
     display: none;
   }
 `;
 
+const InformationCon = styled.div`
+  height: 20px;
+`;
+
+const ProjectTitleCon = styled.div`
+  grid-column: 9 / span 2;
+  /* background-color: red; */
+  @media (max-width: 1025px) {
+    display: none;
+  }
+  @media (max-width: 666px) {
+    grid-column: 1 / span 2;
+  }
+`;
+
+const CategoryCon = styled.div`
+  grid-column: 11 / span 3;
+`;
+
+const LocationCon = styled.div`
+  grid-column: 14 / span 2;
+  margin-top: -15px;
+  @media (max-width: 1025px) {
+    display: none;
+  }
+  @media (max-width: 666px) {
+    grid-column: 3 / span 2;
+    margin-top: 0px;
+  }
+`;
+
+const YearCon = styled.div`
+  grid-column: 16 / span 1;
+  @media (max-width: 1025px) {
+    display: none;
+  }
+  @media (max-width: 666px) {
+    grid-column: 3 / span 2;
+    margin-top: -10px;
+  }
+`;
+
 const ImgCon = styled.div`
-  /* grid-column: span 4; */
-  /* grid-column-start: 8; */
   display: none;
   grid-column: ${props => {
     const column = props.columnProp;
@@ -360,9 +315,128 @@ const ImgCon = styled.div`
   }
 `;
 
+/* - - - - - - - tablet */
+
+const TabletIndexNum = styled.div`
+  p {
+    font-size: 85px;
+    color: white;
+
+    font-family: "HelveticaNowDisplay";
+    font-weight: bold;
+  }
+`;
+const TabletImage = styled.div`
+  margin-bottom: 5px;
+`;
+
+const TabletTitle = styled.div`
+  width: 50%;
+  display: inline-block;
+  float: left;
+`;
+
+const TabletLocationYear = styled.div`
+  width: 50%;
+  display: inline-block;
+  float: left;
+  padding-left: 6px;
+`;
+
+/* - - - - - - - mobile */
+
+const MobileIndexNum = styled.div`
+  p {
+    font-size: 50px;
+    color: white;
+
+    font-family: "HelveticaNowDisplay";
+    font-weight: bold;
+  }
+`;
+const MobileImage = styled.div`
+  margin-bottom: 5px;
+`;
+
+const MobileTitle = styled.div`
+  width: 50%;
+  display: inline-block;
+  float: left;
+`;
+
+const MobileLocationYear = styled.div`
+  width: 50%;
+  display: inline-block;
+  float: left;
+  padding-left: 5px;
+`;
+
+/* - - - - - - - unviersal between screen sizes */
+const ProjectCon = styled.div`
+  z-index: 3000;
+
+  opacity: ${props => {
+    console.log("hello");
+    const activeProject = props.activeProject;
+    const index = props.projectIndex;
+
+    if (activeProject === index) {
+      return "1";
+    } else {
+      return "0.5";
+    }
+  }};
+
+  @media (max-width: 1024px) {
+    grid-column: span 4;
+    margin-bottom: 120px;
+  }
+  @media (max-width: 666px) {
+  }
+`;
+
+const IndexBodyP = styled.p`
+  color: white;
+  font-size: 16px;
+  /* opacity: 0.5; */
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: -0.2px;
+`;
+
+const IndexTitleP = styled.p`
+  font-size: 12px;
+  opacity: 0.5;
+  color: white;
+  letter-spacing: -0.3px;
+`;
+
+const CategoryName = styled.span`
+  text-transform: capitalize;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+`;
+
+const NumCon = styled.div`
+  p {
+    font-size: 100px;
+    color: white;
+    font-family: "HelveticaNowDisplay";
+    font-weight: bold;
+  }
+  position: fixed;
+  bottom: 12.5px;
+  left: 12.5px;
+  @media (hover: none) {
+    display: none;
+  }
+`;
+
 const SlideShowCon = styled.div``;
 const ProjectIndex = ({ data }) => {
-  let isPageWide = useMediaQuery("(min-width: 667px)");
+  let isMobile = useMediaQuery("(min-width: 667px)");
+  let isTablet = useMediaQuery("(min-width: 667px)");
   const [activeCategory, setCategory] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -444,118 +518,149 @@ const ProjectIndex = ({ data }) => {
     );
   });
 
-  const organisedArrayMap = projectIndexSelectArray
-    .filter(project => {
-      if (activeCategory === null) {
-        return project;
-      } else {
-        return project.content.project_relationship_field.document.data.categories
-          .map(category => textTransfrom(category.category.slug))
-          .includes(activeCategory);
-      }
-    })
-    .map((content, index) => {
-      var index_image = getImage(
-        content.content.project_relationship_field.document.data
-          .index_preview_img
-      );
-      return (
-        <>
-          <Link
-            to={`/${content.content.project_relationship_field.document.uid}`}
-          >
-            <ProjectCon activeProject={activeIndex} projectIndex={index}>
-              <InformationCon>
-                <Grid16>
-                  <MobileIndexNumberCon>
-                    <p>{index + 1}</p>
-                  </MobileIndexNumberCon>
-                  <MobileProjectImgCon>
-                    <GatsbyImage image={index_image} />
-                  </MobileProjectImgCon>
-                  <ProjectTitleCon
-                    onMouseEnter={e => activeIndexFunction(e, index)}
-                  >
-                    <IndexBodyP activeProject={activeIndex}>
-                      {
-                        content.content.project_relationship_field.document.data
-                          .project_title.text
-                      }
-                    </IndexBodyP>
-                  </ProjectTitleCon>
-                  <CategoryCon>
-                    <IndexBodyP>
-                      {" "}
-                      {content.content.project_relationship_field.document.data.categories.map(
-                        (category, index) => {
-                          return (
-                            <CategoryName key={index}>
-                              {(index ? ", " : "") + category.category.slug}
-                            </CategoryName>
-                          );
-                        }
-                      )}
-                    </IndexBodyP>
-                  </CategoryCon>
-                  <LocationCon>
-                    <IndexBodyP>
-                      {
-                        content.content.project_relationship_field.document.data
-                          .location.text
-                      }
-                    </IndexBodyP>
-                  </LocationCon>
-                  <YearCon>
-                    <IndexBodyP>
-                      {" "}
-                      {
-                        content.content.project_relationship_field.document.data
-                          .year.text
-                      }
-                    </IndexBodyP>
-                  </YearCon>
-                </Grid16>
-              </InformationCon>
-            </ProjectCon>
-          </Link>
-        </>
-      );
-    });
-
-  function textTransfrom(y) {
-    return y.replace("-", " ").replace(/(?:^|\s)\S/g, a => a.toUpperCase());
-  }
-
-  const Categories = () => {
+  const desktopProjects = projectIndexSelectArray.map((content, index) => {
+    var index_image = getImage(
+      content.content.project_relationship_field.document.data.index_preview_img
+    );
     return (
       <>
-        <CategoryItem
-          onClick={() => setCategory(null)}
-          className={activeCategory === null ? `active` : ``}
+        <Link
+          to={`/${content.content.project_relationship_field.document.uid}`}
         >
-          All,{" "}
-        </CategoryItem>
-
-        {categoriesList}
+          <ProjectCon activeProject={activeIndex} projectIndex={index}>
+            <InformationCon>
+              <Grid16>
+                <ProjectTitleCon
+                  onMouseEnter={e => activeIndexFunction(e, index)}
+                >
+                  <IndexBodyP activeProject={activeIndex}>
+                    {
+                      content.content.project_relationship_field.document.data
+                        .project_title.text
+                    }
+                  </IndexBodyP>
+                </ProjectTitleCon>
+                <CategoryCon>
+                  <IndexBodyP>
+                    {" "}
+                    {content.content.project_relationship_field.document.data.categories.map(
+                      (category, index) => {
+                        return (
+                          <CategoryName key={index}>
+                            {(index ? ", " : "") + category.category.slug}
+                          </CategoryName>
+                        );
+                      }
+                    )}
+                  </IndexBodyP>
+                </CategoryCon>
+                <LocationCon>
+                  <IndexBodyP>
+                    {
+                      content.content.project_relationship_field.document.data
+                        .location.text
+                    }
+                  </IndexBodyP>
+                </LocationCon>
+                <YearCon>
+                  <IndexBodyP>
+                    {" "}
+                    {
+                      content.content.project_relationship_field.document.data
+                        .year.text
+                    }
+                  </IndexBodyP>
+                </YearCon>
+              </Grid16>
+            </InformationCon>
+          </ProjectCon>
+        </Link>
       </>
     );
-  };
+  });
 
-  const categoriesList = data.allPrismicCategory.edges.map((content, index) => {
+  const tabletProjects = projectIndexSelectArray.map((content, index) => {
+    var index_image = getImage(
+      content.content.project_relationship_field.document.data.index_preview_img
+    );
     return (
-      <>
-        <CategoryItem>{index ? ", " : ""}</CategoryItem>
-
-        <CategoryItem
-          className={activeCategory === content.node.data.name ? `active` : ``}
-          key={index}
-          onClick={() => {
-            setCategory(content.node.data.name);
-          }}
+      <ProjectCon>
+        <Link
+          to={`/${content.content.project_relationship_field.document.uid}`}
         >
-          {content.node.data.name}
-        </CategoryItem>
-      </>
+          <>
+            <TabletIndexNum>
+              <p>{index + 1}</p>
+            </TabletIndexNum>
+            <TabletImage>
+              <GatsbyImage image={index_image} />
+            </TabletImage>
+
+            <TabletTitle>
+              <IndexBodyP>
+                {
+                  content.content.project_relationship_field.document.data
+                    .project_title.text
+                }
+              </IndexBodyP>
+            </TabletTitle>
+            <TabletLocationYear>
+              <IndexBodyP>
+                {
+                  content.content.project_relationship_field.document.data
+                    .location.text
+                }
+                <br></br>
+                {
+                  content.content.project_relationship_field.document.data.year
+                    .text
+                }
+              </IndexBodyP>
+            </TabletLocationYear>
+          </>
+        </Link>
+      </ProjectCon>
+    );
+  });
+
+  const mobileProjects = projectIndexSelectArray.map((content, index) => {
+    var index_image = getImage(
+      content.content.project_relationship_field.document.data.index_preview_img
+    );
+    return (
+      <ProjectCon>
+        <Link
+          to={`/${content.content.project_relationship_field.document.uid}`}
+        >
+          <MobileIndexNum>
+            <p>{index + 1}</p>
+          </MobileIndexNum>
+          <MobileImage>
+            <GatsbyImage image={index_image} />
+          </MobileImage>
+          <MobileTitle>
+            <IndexBodyP>
+              {
+                content.content.project_relationship_field.document.data
+                  .project_title.text
+              }
+            </IndexBodyP>
+          </MobileTitle>
+          <MobileLocationYear>
+            <IndexBodyP>
+              {
+                content.content.project_relationship_field.document.data
+                  .location.text
+              }
+              <br></br>
+              {
+                content.content.project_relationship_field.document.data.year
+                  .text
+              }
+            </IndexBodyP>
+          </MobileLocationYear>
+        </Link>
+      </ProjectCon>
     );
   });
 
@@ -581,7 +686,6 @@ const ProjectIndex = ({ data }) => {
       <ProjectsCon>
         <TableHeaderCon>
           <Grid16>
-            <ImgSpacer></ImgSpacer>
             <ProjectTitleCon>
               <IndexTitleP>Project</IndexTitleP>
             </ProjectTitleCon>
@@ -596,7 +700,9 @@ const ProjectIndex = ({ data }) => {
             </LocationCon>
           </Grid16>
         </TableHeaderCon>
-        <TableCon>{organisedArrayMap}</TableCon>
+        <DesktopTableCon>{desktopProjects}</DesktopTableCon>
+        <TabletTableCon>{tabletProjects}</TabletTableCon>
+        <MobileTableCon>{mobileProjects}</MobileTableCon>
       </ProjectsCon>
       <ImgConConCon>
         <ImgConCon>{images}</ImgConCon>
