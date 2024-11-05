@@ -41,21 +41,18 @@ const AutoplayVideoCon = styled.div`
   @media (min-width: 666px) {
     height: ${props => {
       const fullBleed = props.fullBleed;
-      console.log(fullBleed);
       if (fullBleed == true) {
         return "inherit !important";
       }
     }};
   width: ${props => {
     const fullBleed = props.fullBleed;
-    console.log(fullBleed);
     if (fullBleed == true) {
       return "100vw";
     }
   }};
     margin: ${props => {
       const fullBleed = props.fullBleed;
-      console.log(fullBleed);
       if (fullBleed == true) {
         return "0px";
       }
@@ -70,7 +67,7 @@ const AutoplayVideoCon = styled.div`
     width: calc(100% - 20px);
     z-index: 20000;
     align-items: center;
-    height: 100vh;
+    height: 110vh;
     /* &.landscape {
       height: 100vh;
       top: 0;
@@ -95,7 +92,6 @@ const AutoPlayVideoConInner = styled.div`
   @media (min-width: 666px) {
     grid-column: ${props => {
       const fullBleed = props.fullBleed;
-      console.log(fullBleed);
       if (fullBleed == true) {
         return "span 48 !important";
       }

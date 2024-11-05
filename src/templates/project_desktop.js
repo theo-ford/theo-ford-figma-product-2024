@@ -291,6 +291,7 @@ const BlackFilmsModuleCon = styled.div`
   margin-left: -12.5px;
   background-color: black;
   height: 110vh;
+
   margin-top: ${props => {
     const test = props.RowMarginTop;
     if (test === "120px") {
@@ -302,18 +303,20 @@ const BlackFilmsModuleCon = styled.div`
   @media (min-width: 666px) {
     height: ${props => {
       const fullBleed = props.fullBleed;
-      console.log(fullBleed);
+
       if (fullBleed == true) {
         return "inherit !important";
       }
     }};
     background-color: ${props => {
       const fullBleed = props.fullBleed;
-      console.log(fullBleed);
+
       if (fullBleed == true) {
         return "white";
       }
     }};
+  }
+  @media (max-width: 666px) {
     margin-top: 0;
     margin-bottom: 120px;
   }
@@ -688,6 +691,7 @@ const ProjectDesktop = ({ data }) => {
         const posterImage = content.primary.poster_image;
         // console.log(posterImage);
         // console.log(content.primary.full_bleed);
+        console.log(content.primary.row_margin_top);
         return (
           <>
             <BlackFilmsModuleCon
