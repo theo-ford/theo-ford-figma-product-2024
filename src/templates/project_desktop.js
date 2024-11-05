@@ -119,6 +119,7 @@ const MetaCon = styled.div`
     p,
     span {
       font-size: 12px;
+      margin-bottom: 0px;
     }
   }
 `;

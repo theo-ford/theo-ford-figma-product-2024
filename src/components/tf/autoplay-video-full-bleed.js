@@ -74,8 +74,6 @@ export const AutoPlayVideoFullBleed = ({
   const [videoSrcState, setVideoSrcState] = useState("");
   const [isVideoLoaded, setIsVideoLoaded] = React.useState(false);
 
-  console.log(isOnScreen);
-
   const onLoadedData = () => {
     setIsVideoLoaded(true);
   };
