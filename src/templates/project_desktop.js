@@ -7,6 +7,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import { useMediaQuery } from "../components/tf/media-query";
 import Icon from "../../assets/WhiteLogo.svg";
 import { AutoPlayVideo } from "../components/tf/autoplay-video";
+import { AutoPlayVideoFullBleed } from "../components/tf/autoplay-video-full-bleed";
 import { NavGrid } from "../components/tf/nav-grid/nav";
 import { PageLoad } from "../components/tf/page-load";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
@@ -17,6 +18,7 @@ import { AutoPlayVideoOriginalAuto } from "../components/tf/autoplay-video-Origi
 const GlobalStyle = createGlobalStyle`
   p {
     letter-spacing: -0.2px;
+    margin-bottom: 16px;
   }
   body {
     width: calc(100vw);
@@ -85,7 +87,12 @@ const IntroCon = styled.div`
   margin-left: 12.5px;
   align-items: center;
   height: 70vh;
+  @media (max-width: 666px) {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+  }
 `;
+
 const IntroTextCon = styled.div`
   grid-column: span 8;
   p {
@@ -108,6 +115,12 @@ const MetaCon = styled.div`
   width: calc(100% - 25px);
   margin-left: 12.5px;
   margin-bottom: 10px;
+  @media (max-width: 666px) {
+    p,
+    span {
+      font-size: 12px;
+    }
+  }
 `;
 const Grid16 = styled.div`
   display: grid;
@@ -147,12 +160,37 @@ const BodyTextCon = styled.div`
       font-size: 16px;
     }
   }
+  @media (max-width: 666px) {
+    margin-top: 0;
+    margin-bottom: 120px;
+  }
 `;
 
 const FullBleedImgCon = styled.div`
   grid-column: span 16;
   width: calc(100% + 25px);
   margin-left: -12.5px;
+  margin-top: ${props => {
+    const test = props.RowMarginTop;
+    if (test === "120px") {
+      return "180px";
+    } else {
+      return "0px";
+    }
+  }};
+
+  margin-bottom: ${props => {
+    const test = props.RowMarginTop;
+    if (test === "120px") {
+      return "120px";
+    } else {
+      return "0px";
+    }
+  }};
+  @media (max-width: 666px) {
+    margin-top: 0;
+    margin-bottom: 120px;
+  }
 `;
 const FullBleedImgConCon = styled.div`
   width: ${props => {
@@ -212,6 +250,8 @@ const SquareImgCon = styled.div`
 
   @media (max-width: 666px) {
     grid-column: span 16;
+    margin-top: 0;
+    margin-bottom: 120px;
   }
 `;
 
@@ -237,6 +277,12 @@ const Caption = styled.div`
       }
     }};
   }
+  @media (max-width: 666px) {
+    p {
+      max-width: 100%;
+      font-size: 12px;
+    }
+  }
 `;
 
 const BlackFilmsModuleCon = styled.div`
@@ -253,6 +299,24 @@ const BlackFilmsModuleCon = styled.div`
       return "0px";
     }
   }};
+  @media (min-width: 666px) {
+    height: ${props => {
+      const fullBleed = props.fullBleed;
+      console.log(fullBleed);
+      if (fullBleed == true) {
+        return "inherit !important";
+      }
+    }};
+    background-color: ${props => {
+      const fullBleed = props.fullBleed;
+      console.log(fullBleed);
+      if (fullBleed == true) {
+        return "white";
+      }
+    }};
+    margin-top: 0;
+    margin-bottom: 120px;
+  }
 `;
 const BlackFilmsModuleConCon = styled.div`
   width: ${props => {
@@ -449,7 +513,7 @@ const ProjectDesktop = ({ data }) => {
         if (isPageWide) {
           return (
             <>
-              <FullBleedImgCon>
+              <FullBleedImgCon RowMarginTop={content.primary.row_margin_top}>
                 <FullBleedImgConCon
                   columnStart={content.primary.column_start}
                   columnWidth={content.primary.column_width}
@@ -534,7 +598,7 @@ const ProjectDesktop = ({ data }) => {
                 srcProps={content.primary.video.url}
                 posterProps={posterImgProps}
               />
-              <Caption CaptionFontSize={content.primary.caption_font_size}>
+              <Caption CaptionFontSize={content.primary.caption_size}>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: content.primary.caption.html,
@@ -572,13 +636,12 @@ const ProjectDesktop = ({ data }) => {
         if (isPageWide) {
           return (
             <>
-              <FullBleedImgCon>
+              <FullBleedImgCon RowMarginTop={content.primary.row_margin_top}>
                 <FullBleedImgConCon
                   columnStart={content.primary.column_start}
                   columnWidth={content.primary.column_width}
-                  RowMarginTop={content.primary.row_margin_top}
                 >
-                  <AutoPlayVideo
+                  <AutoPlayVideoFullBleed
                     srcProps={content.primary.video.url}
                     posterProps={posterImgProps}
                   />
@@ -624,9 +687,13 @@ const ProjectDesktop = ({ data }) => {
       if (content.slice_type == "black_films_module") {
         const posterImage = content.primary.poster_image;
         // console.log(posterImage);
+        // console.log(content.primary.full_bleed);
         return (
           <>
-            <BlackFilmsModuleCon RowMarginTop={content.primary.row_margin_top}>
+            <BlackFilmsModuleCon
+              RowMarginTop={content.primary.row_margin_top}
+              fullBleed={content.primary.full_bleed}
+            >
               <BlackFilmsModuleConCon
                 columnStart={content.primary.column_start}
                 columnWidth={content.primary.column_width}
@@ -635,6 +702,7 @@ const ProjectDesktop = ({ data }) => {
                   srcProps={content.primary.video.url}
                   posterProps={posterImage}
                   img={posterImage}
+                  fullBleed={content.primary.full_bleed}
                 />
                 <Caption
                   style={{ marginLeft: "12.5px" }}
@@ -706,7 +774,6 @@ const ProjectDesktop = ({ data }) => {
         </IntroCon>
         <MetaCon>
           <p>
-            Client: {data.prismicProjectDesktop.data.client.text}
             <br></br>
             Team: {data.prismicProjectDesktop.data.team.text}
             <br></br>

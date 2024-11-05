@@ -31,6 +31,37 @@ const AutoplayVideoCon = styled.div`
     width: calc(100%);
     margin-left: 0;
   } */
+  /* display: ${props => {
+    const columnWidth = props.fullBleed;
+    if (columnWidth) {
+      return "block";
+    }
+  }}; */
+
+  @media (min-width: 666px) {
+    height: ${props => {
+      const fullBleed = props.fullBleed;
+      console.log(fullBleed);
+      if (fullBleed == true) {
+        return "inherit !important";
+      }
+    }};
+  width: ${props => {
+    const fullBleed = props.fullBleed;
+    console.log(fullBleed);
+    if (fullBleed == true) {
+      return "100vw";
+    }
+  }};
+    margin: ${props => {
+      const fullBleed = props.fullBleed;
+      console.log(fullBleed);
+      if (fullBleed == true) {
+        return "0px";
+      }
+    }};
+  }
+  
   @media (max-width: 666px) {
     grid-template-columns: 1fr 1fr 1fr 1fr /* 4 */ 1fr 1fr 1fr 1fr /* 8 */ 1fr 1fr 1fr 1fr /* 12 */ 1fr 1fr 1fr 1fr /* 16 */ 1fr 1fr 1fr 1fr /* 20 */ 1fr 1fr 1fr 1fr /* 24 */ 1fr 1fr 1fr 1fr /* 28 */ 1fr 1fr 1fr 1fr /* 32 */ 1fr 1fr 1fr 1fr /* 36 */;
     grid-column-gap: 10px;
@@ -61,6 +92,16 @@ const AutoPlayVideoConInner = styled.div`
   &.landscape {
     grid-column: 13 / span 24;
   }
+  @media (min-width: 666px) {
+    grid-column: ${props => {
+      const fullBleed = props.fullBleed;
+      console.log(fullBleed);
+      if (fullBleed == true) {
+        return "span 48 !important";
+      }
+    }};
+  }
+
   @media (max-width: 666px) {
     &.sml-portrait {
       grid-column: 6 / span 26;
@@ -133,6 +174,7 @@ export const AutoPlayVideoOriginalAuto = ({
   srcProps,
   posterProps,
   changedSlide,
+  fullBleed,
 }) => {
   // https://stackoverflow.com/questions/58341787/intersectionobserver-with-react-hooks
   // https://frontend-digest.com/responsive-and-progressive-video-loading-in-react-e8753315af51
@@ -158,8 +200,14 @@ export const AutoPlayVideoOriginalAuto = ({
   const getPosterImage = getImage(posterProps);
   return (
     <>
-      <AutoplayVideoCon className={ImageOrientation2(posterProps)}>
-        <AutoPlayVideoConInner className={ImageOrientation2(posterProps)}>
+      <AutoplayVideoCon
+        className={ImageOrientation2(posterProps)}
+        fullBleed={fullBleed}
+      >
+        <AutoPlayVideoConInner
+          className={ImageOrientation2(posterProps)}
+          fullBleed={fullBleed}
+        >
           <AutoplayVideoImgCon
             style={{
               opacity: isVideoLoaded ? 0 : 1,
