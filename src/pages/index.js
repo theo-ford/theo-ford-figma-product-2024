@@ -520,9 +520,11 @@ const ProjectIndex = ({ data }) => {
   const [activeCategory, setCategory] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // useEffect(() => {
-  //   console.log(activeIndex);
-  // }, [activeIndex]);
+  useEffect(() => {
+    var x = document.referrer;
+    console.log("hi");
+    console.log(x);
+  }, []);
 
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");

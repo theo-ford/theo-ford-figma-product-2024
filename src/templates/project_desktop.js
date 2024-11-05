@@ -830,6 +830,7 @@ const ProjectDesktop = ({ data }) => {
         <title>
           Theo Ford – {data.prismicProjectDesktop.data.project_title.text}
         </title>
+        <meta name="project page" content="project page"></meta>
       </Helmet>
       <LogoTitleCon>
         <p>
