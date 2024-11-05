@@ -3,7 +3,7 @@ import { graphql, Link } from "gatsby";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 import { Helmet } from "react-helmet";
 import { ImageOrientation } from "../components/utils/image-orientation";
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import { useMediaQuery } from "../components/tf/media-query";
 import Icon from "../../assets/WhiteLogo.svg";
 import { AutoPlayVideo } from "../components/tf/autoplay-video";
@@ -14,6 +14,16 @@ import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import { VideoProjectPage } from "../components/tf/project/video-project-page";
 import Logo from "../../assets/WhiteLogo.svg";
 import { AutoPlayVideoOriginalAuto } from "../components/tf/autoplay-video-OriginalAuto";
+import TheoFord from "../../assets/TheoFord.svg";
+
+const blackToWhite = keyframes`
+  0% {
+    background-color: black;
+;  }
+  100% {
+    background-color: white;
+  }
+`;
 
 const GlobalStyle = createGlobalStyle`
   p {
@@ -23,9 +33,44 @@ const GlobalStyle = createGlobalStyle`
   body {
     width: calc(100vw);
     overflow-x: hidden;
+
+    animation-name: ${blackToWhite};
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
   }
   
 `;
+
+const fadeIn = keyframes`
+  0% {
+    opacity: 0
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const logoScaleDown = keyframes`
+   0% {
+    padding-top: 0px;
+    width: calc(24vw - 6.5px);
+  }
+  50% {
+    padding-top: 0px;
+    width: calc(24vw - 6.5px);
+  }
+  100% {
+    padding-top: 3px;
+    /* padding-top: -50px; */
+    width: calc(68px);
+  }
+`;
+
 const LogoTitleCon = styled.div`
   position: sticky;
   top: 12.5px;
@@ -39,6 +84,32 @@ const LogoTitleCon = styled.div`
     position: relative;
     color: white;
   }
+  svg.theo_ford {
+    width: calc(24vw - 6.5px);
+    /* width: calc(68px); */
+    /* height: 18px; */
+    height: auto;
+    /* background-color: orange; */
+    display: inline-block;
+    float: left;
+    animation-name: ${logoScaleDown};
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+  .sentence {
+    padding-left: 3px;
+    padding-top: -10px;
+    display: inline-block;
+    float: left;
+
+    animation-name: ${fadeIn};
+    animation-duration: 8s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
   @media (max-width: 666px) {
     display: none;
   }
@@ -50,6 +121,13 @@ const MenuCon = styled.div`
   position: sticky;
   top: 12.5px;
   width: 30%;
+
+  animation-name: ${fadeIn};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+
   @media (max-width: 1024px) {
     margin-left: calc(50vw + 7px);
   }
@@ -73,11 +151,23 @@ const PaginationCon = styled.div`
   position: sticky;
   top: 12.5px;
   margin-top: -4px;
+
+  animation-name: ${fadeIn};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
   p {
     color: white;
   }
 `;
-const PageCon = styled.div``;
+const PageCon = styled.div`
+  animation-name: ${fadeIn};
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+`;
 
 const IntroCon = styled.div`
   display: grid;
@@ -397,6 +487,10 @@ const MobileProjectTitleYearLocation = styled.div`
 
 const ProjectDesktop = ({ data }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
+
+  var x = document.referrer;
+  console.log("hi");
+  console.log(x);
 
   const projects = data.prismicProjectIndexSelect.data.project_relationship_group.map(
     project => project.project_relationship_field.document.uid
@@ -738,10 +832,13 @@ const ProjectDesktop = ({ data }) => {
       <LogoTitleCon>
         <p>
           {" "}
-          <span style={{ fontWeight: "bold" }}>Theo Ford</span>
-          &nbsp;for {data.prismicProjectDesktop.data.project_title.text} in{" "}
-          {data.prismicProjectDesktop.data.location.text}.{" "}
-          {data.prismicProjectDesktop.data.year.text}.
+          {/* <span style={{ fontWeight: "bold" }}>Theo Ford</span> */}
+          <TheoFord className="theo_ford" />
+          <span className="sentence">
+            &nbsp;for {data.prismicProjectDesktop.data.project_title.text} in{" "}
+            {data.prismicProjectDesktop.data.location.text}.{" "}
+            {data.prismicProjectDesktop.data.year.text}.
+          </span>
         </p>
       </LogoTitleCon>
 

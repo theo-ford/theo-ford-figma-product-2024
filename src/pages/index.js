@@ -9,17 +9,37 @@ import TheoFord from "../../assets/TheoFord.svg";
 import S from "../../assets/S.svg";
 import PortfolioForFigma from "../../assets/PortfolioForFigma.svg";
 
+const fadeOut = keyframes`
+  0% {
+    opacity: 1
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
+const blackToWhite = keyframes`
+  0% {
+    background-color: black;
+;  }
+  100% {
+    background-color: white;
+  }
+`;
+
 const GlobalStyle = createGlobalStyle`
   html {
-    background-color: black;
+    background-color: white;
   }
+
   body {
-    background-color: black;
+    /* background-color: white; */
     overflow-x: clip;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
   }
+
   p {
     letter-spacing: -0.2px;
   }
@@ -27,7 +47,7 @@ const GlobalStyle = createGlobalStyle`
   } */
   @media (hover:none) {
     body {
-      background: black;
+      /* background: black; */
       max-width: 100vw;
       /* height: 200vh; */
       overflow: scroll;
@@ -45,13 +65,48 @@ const GlobalStyle = createGlobalStyle`
     
   }
 `;
+const whiteToBlack = keyframes`
+  0% {
+    background-color: white
+;  }
+  100% {
+    background-color: black
+  }
+`;
+const fadeIn = keyframes`
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+const BackgroundCon = styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0%;
+  background-color: black;
 
+  animation-name: ${whiteToBlack};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+`;
 /* - - - - - - - navigation */
 const MenuCon = styled.div`
   position: fixed;
   top: 12.5px;
   left: calc(50vw + 12px);
   z-index: 50000;
+
+  animation-name: ${fadeIn};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
 
   @media (max-width: 1024px) {
     left: calc(50vw + 7px);
@@ -81,6 +136,20 @@ const PageTitleCon = styled.div`
   @media (max-width: 1024px) {
     position: relative;
   }
+  svg.s {
+    animation-name: ${fadeIn};
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
+  svg.portfolio_for_figma {
+    animation-name: ${fadeIn};
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-fill-mode: forwards;
+    animation-iteration-count: 1;
+  }
   @media (max-width: 666px) {
     margin-top: 200px;
     position: relative;
@@ -107,6 +176,12 @@ const ProjectsCon = styled.div`
   z-index: 300;
   width: 100%;
   bottom: 12.5px;
+
+  animation-name: ${fadeIn};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
   @media (hover: none) {
     position: relative;
   }
@@ -376,7 +451,6 @@ const ProjectCon = styled.div`
   z-index: 3000;
 
   opacity: ${props => {
-    console.log("hello");
     const activeProject = props.activeProject;
     const index = props.projectIndex;
 
@@ -425,6 +499,12 @@ const NumCon = styled.div`
     font-family: "HelveticaNowDisplay";
     font-weight: bold;
   }
+
+  animation-name: ${fadeIn};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
   position: fixed;
   bottom: 12.5px;
   left: 12.5px;
@@ -670,47 +750,48 @@ const ProjectIndex = ({ data }) => {
       <Helmet>
         <title>Theo Ford – Index</title>
       </Helmet>
+      <BackgroundCon>
+        <Nav></Nav>
 
-      <Nav></Nav>
+        <PageTitleCon>
+          <div>
+            <TheoFord className="theo_ford" />
+            <S className="s"></S>
+          </div>
+          <div>
+            <PortfolioForFigma className="portfolio_for_figma" />
+          </div>
+        </PageTitleCon>
 
-      <PageTitleCon>
-        <div>
-          <TheoFord className="theo_ford" />
-          <S className="s"></S>
-        </div>
-        <div>
-          <PortfolioForFigma className="portfolio_for_figma" />
-        </div>
-      </PageTitleCon>
+        <ProjectsCon>
+          <TableHeaderCon>
+            <Grid16>
+              <ProjectTitleCon>
+                <IndexTitleP>Project</IndexTitleP>
+              </ProjectTitleCon>
+              <CategoryCon>
+                <IndexTitleP>Category</IndexTitleP>
+              </CategoryCon>
+              <YearCon>
+                <IndexTitleP>Year</IndexTitleP>
+              </YearCon>
+              <LocationCon>
+                <IndexTitleP>Location</IndexTitleP>
+              </LocationCon>
+            </Grid16>
+          </TableHeaderCon>
+          <DesktopTableCon>{desktopProjects}</DesktopTableCon>
+          <TabletTableCon>{tabletProjects}</TabletTableCon>
+          <MobileTableCon>{mobileProjects}</MobileTableCon>
+        </ProjectsCon>
+        <ImgConConCon>
+          <ImgConCon>{images}</ImgConCon>
+        </ImgConConCon>
 
-      <ProjectsCon>
-        <TableHeaderCon>
-          <Grid16>
-            <ProjectTitleCon>
-              <IndexTitleP>Project</IndexTitleP>
-            </ProjectTitleCon>
-            <CategoryCon>
-              <IndexTitleP>Category</IndexTitleP>
-            </CategoryCon>
-            <YearCon>
-              <IndexTitleP>Year</IndexTitleP>
-            </YearCon>
-            <LocationCon>
-              <IndexTitleP>Location</IndexTitleP>
-            </LocationCon>
-          </Grid16>
-        </TableHeaderCon>
-        <DesktopTableCon>{desktopProjects}</DesktopTableCon>
-        <TabletTableCon>{tabletProjects}</TabletTableCon>
-        <MobileTableCon>{mobileProjects}</MobileTableCon>
-      </ProjectsCon>
-      <ImgConConCon>
-        <ImgConCon>{images}</ImgConCon>
-      </ImgConConCon>
-
-      <NumCon>
-        <p>{activeIndex + 1}</p>
-      </NumCon>
+        <NumCon>
+          <p>{activeIndex + 1}</p>
+        </NumCon>
+      </BackgroundCon>
     </>
   );
 };

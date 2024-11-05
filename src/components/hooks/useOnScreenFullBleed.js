@@ -5,8 +5,6 @@ export function useOnScreenFullBleed(ref) {
   const [isOnScreen, setIsOnScreen] = useState(false);
   const observerRef = useRef(null);
 
-  console.log("TEST");
-
   useEffect(() => {
     observerRef.current = new IntersectionObserver(
       ([entry]) => {
