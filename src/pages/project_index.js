@@ -296,11 +296,13 @@ const CategoryName = styled.span`
   font-size: 16px;
   letter-spacing: -0.3px;
 `;
-const ProjectIndex = ({ data }) => {
+const ProjectIndex = ({ data, location }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
   const LogoConRef = useRef(null);
   const [activeCategory, setCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
+
+  console.log(location);
 
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");

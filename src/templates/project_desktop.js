@@ -485,14 +485,16 @@ const MobileProjectTitleYearLocation = styled.div`
   }
 `;
 
-const ProjectDesktop = ({ data }) => {
+const ProjectDesktop = ({ data, location }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
 
-  useEffect(() => {
-    var x = document.referrer;
-    console.log("hi");
-    console.log(x);
-  }, []);
+  // useEffect(() => {
+  //   var x = document.referrer;
+  //   console.log("hi");
+  //   console.log(x);
+  // }, []);
+
+  console.log(location);
 
   const projects = data.prismicProjectIndexSelect.data.project_relationship_group.map(
     project => project.project_relationship_field.document.uid

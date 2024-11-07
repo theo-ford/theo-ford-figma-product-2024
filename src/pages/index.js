@@ -514,17 +514,18 @@ const NumCon = styled.div`
 `;
 
 const SlideShowCon = styled.div``;
-const ProjectIndex = ({ data }) => {
+const ProjectIndex = ({ data, location }) => {
   let isMobile = useMediaQuery("(min-width: 667px)");
   let isTablet = useMediaQuery("(min-width: 667px)");
   const [activeCategory, setCategory] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    var x = document.referrer;
-    console.log("hi");
-    console.log(x);
-  }, []);
+  console.log(location);
+  // useEffect(() => {
+  //   var x = document.referrer;
+  //   console.log("hi");
+  //   console.log(x);
+  // }, []);
 
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");

@@ -264,11 +264,13 @@ const ContactCon = styled.div`
     grid-column: span 2;
   }
 `;
-const ProjectIndex = ({ data }) => {
+const ProjectIndex = ({ data, location }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
   const LogoConRef = useRef(null);
   const [activeCategory, setCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
+
+  console.log(location);
 
   const CopyNav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");
