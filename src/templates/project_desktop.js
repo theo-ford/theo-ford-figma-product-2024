@@ -1,9 +1,15 @@
-import React, { useEffect, useState, useRef } from "react";
-import { graphql, Link } from "gatsby";
+import React, {
+  useEffect,
+  useState,
+  useRe,
+  useContext,
+  createContext,
+} from "react";
+import { graphql, Link, navigate, useMemo } from "gatsby";
 import { withPrismicPreview } from "gatsby-plugin-prismic-previews";
 import { Helmet } from "react-helmet";
 import { ImageOrientation } from "../components/utils/image-orientation";
-import styled, { createGlobalStyle, keyframes } from "styled-components";
+import styled, { createGlobalStyle, keyframes, css } from "styled-components";
 import { useMediaQuery } from "../components/tf/media-query";
 import Icon from "../../assets/WhiteLogo.svg";
 import { AutoPlayVideo } from "../components/tf/autoplay-video";
@@ -15,6 +21,8 @@ import { VideoProjectPage } from "../components/tf/project/video-project-page";
 import Logo from "../../assets/WhiteLogo.svg";
 import { AutoPlayVideoOriginalAuto } from "../components/tf/autoplay-video-OriginalAuto";
 import TheoFord from "../../assets/TheoFord.svg";
+import PrevPathContext from "../components/tf/prev-path-context";
+import { NextProject2 } from "../components/tf/next-project";
 
 const blackToWhite = keyframes`
   0% {
@@ -34,25 +42,19 @@ const GlobalStyle = createGlobalStyle`
     width: calc(100vw);
     overflow-x: hidden;
 
-    animation-name: ${blackToWhite};
+    /* animation-name: ${blackToWhite};
     animation-duration: 2s;
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
-    animation-iteration-count: 1;
+    animation-iteration-count: 1; */
+
+    animation: ${props =>
+      props.animateLogo &&
+      css`
+        ${blackToWhite} 2s ease 1 forwards
+      `};
   }
   
-`;
-
-const fadeIn = keyframes`
-  0% {
-    opacity: 0
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 `;
 
 const logoScaleDown = keyframes`
@@ -70,6 +72,46 @@ const logoScaleDown = keyframes`
     width: calc(68px);
   }
 `;
+const fadeIn = keyframes`
+  0% {
+    opacity: 0
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeInKeyFramesSlow = keyframes`
+  0% {
+    opacity: 0
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeInKeyFramesQuick = keyframes`
+  0% {
+    opacity: 0
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
+const fadeInQuickAnimation = css`
+  animation: 4s ease ${fadeInKeyFramesQuick} 1 forwards;
+`;
+
+const fadeInSlowAnimation = css`
+  animation: 8s ease ${fadeInKeyFramesSlow} 1 forwards;
+`;
 
 const LogoTitleCon = styled.div`
   position: sticky;
@@ -85,18 +127,40 @@ const LogoTitleCon = styled.div`
     color: white;
   }
   svg.theo_ford {
-    width: calc(24vw - 6.5px);
-    /* width: calc(68px); */
-    /* height: 18px; */
+    /* width: calc(24vw - 6.5px); */
+    width: ${props => {
+      const test = props.animateLogo;
+      if (test) {
+        return "calc(24vw - 6.5px)";
+      } else {
+        return "calc(68px)";
+      }
+    }};
+
+    padding-top: ${props => {
+      const test = props.animateLogo;
+      if (test) {
+        return "0px";
+      } else {
+        return "3px";
+      }
+    }};
+
     height: auto;
-    /* background-color: orange; */
     display: inline-block;
     float: left;
-    animation-name: ${logoScaleDown};
+
+    animation: ${props =>
+      props.animateLogo &&
+      css`
+        ${logoScaleDown} 3s ease 1 forwards
+      `};
+
+    /* animation-name: ${logoScaleDown};
     animation-duration: 4s;
     animation-iteration-count: infinite;
     animation-fill-mode: forwards;
-    animation-iteration-count: 1;
+    animation-iteration-count: 1; */
   }
   .sentence {
     padding-left: 3px;
@@ -104,11 +168,7 @@ const LogoTitleCon = styled.div`
     display: inline-block;
     float: left;
 
-    animation-name: ${fadeIn};
-    animation-duration: 8s;
-    animation-iteration-count: infinite;
-    animation-fill-mode: forwards;
-    animation-iteration-count: 1;
+    ${props => (props.animateLogo ? fadeInSlowAnimation : fadeInQuickAnimation)}
   }
   @media (max-width: 666px) {
     display: none;
@@ -122,11 +182,13 @@ const MenuCon = styled.div`
   top: 12.5px;
   width: 30%;
 
-  animation-name: ${fadeIn};
+  /* animation-name: ${fadeIn};
   animation-duration: 8s;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
-  animation-iteration-count: 1;
+  animation-iteration-count: 1; */
+
+  ${props => (props.animateLogo ? fadeInSlowAnimation : fadeInQuickAnimation)}
 
   @media (max-width: 1024px) {
     margin-left: calc(50vw + 7px);
@@ -152,21 +214,26 @@ const PaginationCon = styled.div`
   top: 12.5px;
   margin-top: -4px;
 
-  animation-name: ${fadeIn};
+  /* animation-name: ${fadeIn};
   animation-duration: 8s;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
-  animation-iteration-count: 1;
+  animation-iteration-count: 1; */
+
+  ${props => (props.animateLogo ? fadeInSlowAnimation : fadeInQuickAnimation)}
   p {
     color: white;
   }
 `;
+
 const PageCon = styled.div`
-  animation-name: ${fadeIn};
+ /* animation-name: ${fadeIn};
   animation-duration: 8s;
   animation-iteration-count: infinite;
   animation-fill-mode: forwards;
-  animation-iteration-count: 1;
+  animation-iteration-count: 1; */
+
+  ${props => (props.animateLogo ? fadeInSlowAnimation : fadeInQuickAnimation)}
 `;
 
 const IntroCon = styled.div`
@@ -485,16 +552,28 @@ const MobileProjectTitleYearLocation = styled.div`
   }
 `;
 
-const ProjectDesktop = ({ data, location }) => {
+const ProjectDesktop = ({ data, location, props }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
+  const [animateLogo, setAnimateLogo] = useState(false);
+  const [leavePage, setLeavePage] = useState(false);
+  const { currentPath, setCurrentPath } = useContext(PrevPathContext);
 
-  // useEffect(() => {
-  //   var x = document.referrer;
-  //   console.log("hi");
-  //   console.log(x);
-  // }, []);
+  console.log(currentPath);
 
-  console.log(location);
+  // const { prevPathContextVal } = useContext(prevPathContext);
+
+  // ANIMATE LOGO BASED ON STATE OF PREVIOUS URL
+  useEffect(() => {
+    // console.log(prevPath);
+    if (currentPath === "/") {
+      setAnimateLogo(true);
+    }
+  }, [setAnimateLogo]);
+
+  // console.log("CURRENT PATH STATE" + currentPath);
+  // console.log("CONTEXT" + prevPathContextVal);
+
+  // console.log(window.history);
 
   const projects = data.prismicProjectIndexSelect.data.project_relationship_group.map(
     project => project.project_relationship_field.document.uid
@@ -505,7 +584,6 @@ const ProjectDesktop = ({ data, location }) => {
   const currentProjectPageNumber = projects.indexOf(
     data.prismicProjectDesktop.uid
   );
-  // console.log(currentProjectPageNumber);
 
   const nextProjectUid =
     // if the current page + 1 is less than total projects
@@ -513,7 +591,6 @@ const ProjectDesktop = ({ data, location }) => {
       ? // looks in the projects array for current project number + 1
         projects[currentProjectPageNumber + 1]
       : projects[0];
-  // console.log(nextProjectUid);
 
   // filter for next project uid in all the projects
   // but this is the things that allows you to pull content from that project
@@ -523,79 +600,12 @@ const ProjectDesktop = ({ data, location }) => {
       project.project_relationship_field.document.uid === nextProjectUid
   );
 
-  const prevProjectUid =
-    // if the current page + 1 is less than total projects
-    currentProjectPageNumber + 1 < projects.length
-      ? // looks in the projects array for current project number + 1
-        projects[currentProjectPageNumber - 1]
-      : projects[0];
-
-  const prevProjectContent = data.prismicProjectIndexSelect.data.project_relationship_group.filter(
-    project =>
-      project.project_relationship_field.document.uid === prevProjectUid
-  );
-
-  var x = undefined;
-  if (currentProjectPageNumber === 0) {
-    x = true;
-  } else {
-    x = false;
-  }
-
   var y = undefined;
   if (currentProjectPageNumber === projects.length - 1) {
     y = true;
   } else {
     y = false;
   }
-
-  const PrevProject = () => {
-    return (
-      <div>
-        <Link
-          to={`/${prevProjectContent[0].project_relationship_field.document.uid}`}
-        >
-          <p className="header">Previous Project</p>
-          <GatsbyImage
-            image={
-              prevProjectContent[0].project_relationship_field.document.data
-                .index_preview_img.gatsbyImageData
-            }
-          />
-          <p className="project_title">
-            {
-              prevProjectContent[0].project_relationship_field.document.data
-                .project_title.text
-            }
-          </p>
-        </Link>
-      </div>
-    );
-  };
-
-  const NextProject = () => {
-    return (
-      <div>
-        <Link
-          to={`/${nextProjectContent[0].project_relationship_field.document.uid}`}
-        >
-          <p className="header">Next Project</p>
-          <GatsbyImage
-            image={
-              nextProjectContent[0].project_relationship_field.document.data
-                .index_preview_img.gatsbyImageData
-            }
-          />
-          <p className="project_title">
-            {
-              nextProjectContent[0].project_relationship_field.document.data
-                .project_title.text
-            }
-          </p>
-        </Link>
-      </div>
-    );
-  };
 
   const Resume = () => {
     return (
@@ -788,9 +798,7 @@ const ProjectDesktop = ({ data, location }) => {
 
       if (content.slice_type == "black_films_module") {
         const posterImage = content.primary.poster_image;
-        // console.log(posterImage);
-        // console.log(content.primary.full_bleed);
-        console.log(content.primary.row_margin_top);
+
         return (
           <>
             <BlackFilmsModuleCon
@@ -827,14 +835,16 @@ const ProjectDesktop = ({ data, location }) => {
 
   return (
     <>
-      <GlobalStyle />
+      <GlobalStyle animateLogo={animateLogo} />
       <Helmet>
         <title>
           Theo Ford – {data.prismicProjectDesktop.data.project_title.text}
         </title>
         <meta name="project page" content="project page"></meta>
       </Helmet>
-      <LogoTitleCon>
+      {/* <prevPathContext.Provider value={{ currentPath, setCurrentPath }}> */}
+      <LogoTitleCon animateLogo={animateLogo}>
+        {/* <LogoTitleCon> */}
         <p>
           {" "}
           {/* <span style={{ fontWeight: "bold" }}>Theo Ford</span> */}
@@ -847,7 +857,7 @@ const ProjectDesktop = ({ data, location }) => {
         </p>
       </LogoTitleCon>
 
-      <MenuCon>
+      <MenuCon animateLogo={animateLogo}>
         <DesktopNavP>
           <Link to="/">Index, </Link>
           <Link to="/resume">Resume, </Link>
@@ -855,12 +865,12 @@ const ProjectDesktop = ({ data, location }) => {
           {/* <br></br>Instagram, Twitter */}
         </DesktopNavP>
       </MenuCon>
-      <PaginationCon>
+      <PaginationCon animateLogo={animateLogo}>
         <DesktopNavP>
           Project {currentProjectPageNumber + 1} of {projects.length}
         </DesktopNavP>
       </PaginationCon>
-      <PageCon>
+      <PageCon animateLogo={animateLogo}>
         <IntroCon>
           <IntroTextCon>
             <MobileProjectTitleYearLocation>
@@ -902,10 +912,27 @@ const ProjectDesktop = ({ data, location }) => {
         <Grid16>{projectBody}</Grid16>
         <MoreProjects>
           {/* {x ? "" : <PrevProject />} */}
-          {y ? <Resume /> : <NextProject />}
+          {y ? (
+            <Resume />
+          ) : (
+            <NextProject2
+              image={
+                nextProjectContent[0].project_relationship_field.document.data
+                  .index_preview_img.gatsbyImageData
+              }
+              title={
+                nextProjectContent[0].project_relationship_field.document.data
+                  .project_title.text
+              }
+              url={
+                nextProjectContent[0].project_relationship_field.document.uid
+              }
+            />
+          )}
           {/* <NextProject></NextProject> */}
         </MoreProjects>
       </PageCon>
+      {/* </prevPathContext.Provider> */}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { graphql, Link } from "gatsby";
 import { GatsbyImage, getImage } from "gatsby-plugin-image";
 import styled, { createGlobalStyle, keyframes } from "styled-components";
@@ -8,6 +8,7 @@ import { useMediaQuery } from "../components/tf/media-query";
 import TheoFord from "../../assets/TheoFord.svg";
 import S from "../../assets/S.svg";
 import PortfolioForFigma from "../../assets/PortfolioForFigma.svg";
+import PrevPathContext from "../components/tf/prev-path-context";
 
 const fadeOut = keyframes`
   0% {
@@ -514,13 +515,13 @@ const NumCon = styled.div`
 `;
 
 const SlideShowCon = styled.div``;
-const ProjectIndex = ({ data, location }) => {
+const ProjectIndex = ({ data, location, props }) => {
   let isMobile = useMediaQuery("(min-width: 667px)");
   let isTablet = useMediaQuery("(min-width: 667px)");
   const [activeCategory, setCategory] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  console.log(location);
+  // console.log(location);
   // useEffect(() => {
   //   var x = document.referrer;
   //   console.log("hi");
@@ -573,6 +574,8 @@ const ProjectIndex = ({ data, location }) => {
 
   const images = projectIndexSelectArray.map((content, index) => {
     const [imgState, setImgState] = useState(false);
+    const { currentPath, setCurrentPath } = useContext(PrevPathContext);
+    setCurrentPath(location.pathname);
 
     useEffect(() => {
       if (activeIndex === index) {
@@ -601,66 +604,70 @@ const ProjectIndex = ({ data, location }) => {
     );
   });
 
-  const desktopProjects = projectIndexSelectArray.map((content, index) => {
-    var index_image = getImage(
-      content.content.project_relationship_field.document.data.index_preview_img
-    );
-    return (
-      <>
-        <Link
-          to={`/${content.content.project_relationship_field.document.uid}`}
-        >
-          <ProjectCon activeProject={activeIndex} projectIndex={index}>
-            <InformationCon>
-              <Grid16>
-                <ProjectTitleCon
-                  onMouseEnter={e => activeIndexFunction(e, index)}
-                >
-                  <IndexBodyP activeProject={activeIndex}>
-                    {
-                      content.content.project_relationship_field.document.data
-                        .project_title.text
-                    }
-                  </IndexBodyP>
-                </ProjectTitleCon>
-                <CategoryCon>
-                  <IndexBodyP>
-                    {" "}
-                    {content.content.project_relationship_field.document.data.categories.map(
-                      (category, index) => {
-                        return (
-                          <CategoryName key={index}>
-                            {(index ? ", " : "") + category.category.slug}
-                          </CategoryName>
-                        );
+  const desktopProjects = projectIndexSelectArray.map(
+    (content, index, location) => {
+      var index_image = getImage(
+        content.content.project_relationship_field.document.data
+          .index_preview_img
+      );
+      return (
+        <>
+          <Link
+            state={{ prevPath: location.url }}
+            to={`/${content.content.project_relationship_field.document.uid}`}
+          >
+            <ProjectCon activeProject={activeIndex} projectIndex={index}>
+              <InformationCon>
+                <Grid16>
+                  <ProjectTitleCon
+                    onMouseEnter={e => activeIndexFunction(e, index)}
+                  >
+                    <IndexBodyP activeProject={activeIndex}>
+                      {
+                        content.content.project_relationship_field.document.data
+                          .project_title.text
                       }
-                    )}
-                  </IndexBodyP>
-                </CategoryCon>
-                <LocationCon>
-                  <IndexBodyP>
-                    {
-                      content.content.project_relationship_field.document.data
-                        .location.text
-                    }
-                  </IndexBodyP>
-                </LocationCon>
-                <YearCon>
-                  <IndexBodyP>
-                    {" "}
-                    {
-                      content.content.project_relationship_field.document.data
-                        .year.text
-                    }
-                  </IndexBodyP>
-                </YearCon>
-              </Grid16>
-            </InformationCon>
-          </ProjectCon>
-        </Link>
-      </>
-    );
-  });
+                    </IndexBodyP>
+                  </ProjectTitleCon>
+                  <CategoryCon>
+                    <IndexBodyP>
+                      {" "}
+                      {content.content.project_relationship_field.document.data.categories.map(
+                        (category, index) => {
+                          return (
+                            <CategoryName key={index}>
+                              {(index ? ", " : "") + category.category.slug}
+                            </CategoryName>
+                          );
+                        }
+                      )}
+                    </IndexBodyP>
+                  </CategoryCon>
+                  <LocationCon>
+                    <IndexBodyP>
+                      {
+                        content.content.project_relationship_field.document.data
+                          .location.text
+                      }
+                    </IndexBodyP>
+                  </LocationCon>
+                  <YearCon>
+                    <IndexBodyP>
+                      {" "}
+                      {
+                        content.content.project_relationship_field.document.data
+                          .year.text
+                      }
+                    </IndexBodyP>
+                  </YearCon>
+                </Grid16>
+              </InformationCon>
+            </ProjectCon>
+          </Link>
+        </>
+      );
+    }
+  );
 
   const tabletProjects = projectIndexSelectArray.map((content, index) => {
     var index_image = getImage(

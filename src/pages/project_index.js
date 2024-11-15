@@ -302,8 +302,6 @@ const ProjectIndex = ({ data, location }) => {
   const [activeCategory, setCategory] = useState(null);
   const [categoriesVisible, setCategoriesVisible] = useState(false);
 
-  console.log(location);
-
   const Nav = () => {
     let isPageWide = useMediaQuery("(min-width: 667px)");
     var [currentPage, setCurrentPage] = useState(null);
