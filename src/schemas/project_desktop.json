@@ -236,6 +236,32 @@
               }
             },
             "repeat": {}
+          },
+          "carousel": {
+            "type": "Slice",
+            "fieldset": "Carousel",
+            "description": "Carousel",
+            "icon": "add_box",
+            "display": "list",
+            "non-repeat": {
+              "caption": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph",
+                  "label": "Caption"
+                }
+              }
+            },
+            "repeat": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Image"
+                }
+              }
+            }
           }
         }
       }
@@ -773,6 +799,32 @@
               }
             },
             "repeat": {}
+          },
+          "carousel": {
+            "type": "Slice",
+            "fieldset": "Carousel",
+            "description": "Carousel",
+            "icon": "add_box",
+            "display": "list",
+            "non-repeat": {
+              "caption": {
+                "type": "StructuredText",
+                "config": {
+                  "single": "paragraph",
+                  "label": "Caption"
+                }
+              }
+            },
+            "repeat": {
+              "image": {
+                "type": "Image",
+                "config": {
+                  "constraint": {},
+                  "thumbnails": [],
+                  "label": "Image"
+                }
+              }
+            }
           }
         }
       }
