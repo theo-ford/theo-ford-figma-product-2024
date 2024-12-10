@@ -23,6 +23,9 @@ import { AutoPlayVideoOriginalAuto } from "../components/tf/autoplay-video-Origi
 import TheoFord from "../../assets/TheoFord.svg";
 import PrevPathContext from "../components/tf/prev-path-context";
 import { NextProject2 } from "../components/tf/next-project";
+import "../components/styles/index.css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { OneUpProjectCarouselSwiperOf1ProjectDesktop } from "../components/tf/index/one-up-carousel/one-up-carousel-swiper-of-1-project-desktop";
 
 const blackToWhite = keyframes`
   0% {
@@ -551,6 +554,9 @@ const MobileProjectTitleYearLocation = styled.div`
     display: block;
   }
 `;
+const CarouselCon = styled.div`
+  margin-top: 50px;
+`;
 
 const ProjectDesktop = ({ data, location, props }) => {
   let isPageWide = useMediaQuery("(min-width: 667px)");
@@ -685,6 +691,7 @@ const ProjectDesktop = ({ data, location, props }) => {
           </>
         );
       }
+
       if (content.slice_type == "text") {
         return (
           <BodyTextCon RowMarginTop={content.primary.row_margin_top}>
@@ -742,6 +749,43 @@ const ProjectDesktop = ({ data, location, props }) => {
             </SquareImgCon>
           );
         }
+      }
+      if (content.slice_type == "carousel") {
+        // const image = getImage(content.primary.image);
+        console.log("Carousel");
+        const carouselLength = content.items.length;
+        console.log(carouselLength);
+        const x = content.items.map(index => {
+          // console.log(image);
+          //  const image = getImage(index.image);
+          const image = getImage(index.image);
+
+          return (
+            <SwiperSlide>
+              <GatsbyImage image={image} />
+            </SwiperSlide>
+          );
+        });
+        return (
+          <>
+            <SquareImgCon
+              columnStart={content.primary.column_start}
+              columnWidth={content.primary.column_width}
+              RowMarginTop={content.primary.row_margin_top}
+              ImgMarginTop={content.primary.margin_top}
+            >
+              <CarouselCon>
+                <OneUpProjectCarouselSwiperOf1ProjectDesktop
+                  projectLength={carouselLength}
+                  captionFontSize={content.primary.caption_font_size}
+                  caption={content.primary.caption}
+                >
+                  {x}
+                </OneUpProjectCarouselSwiperOf1ProjectDesktop>
+              </CarouselCon>
+            </SquareImgCon>
+          </>
+        );
       }
       if (content.slice_type == "full_bleed_video") {
         const posterImgProps = content.primary.poster_image;
@@ -1158,6 +1202,29 @@ export const query = graphql`
                 text
               }
               caption_font_size
+            }
+          }
+          ... on PrismicProjectDesktopDataBody2Carousel {
+            id
+            slice_type
+            items {
+              image {
+                gatsbyImageData
+              }
+            }
+            primary {
+              caption {
+                text
+                html
+              }
+              caption_font_size
+              column_start
+              column_width
+              margin_top
+              row_margin_top
+              caption {
+                text
+              }
             }
           }
         }
